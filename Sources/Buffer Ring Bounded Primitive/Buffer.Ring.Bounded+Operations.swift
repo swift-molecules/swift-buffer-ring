@@ -12,7 +12,9 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     ///
     /// Actual capacity comes from `storage.capacity` per H6.
     @inlinable
-    public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(minimumCapacity: Index<Element>.Count) where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
+    public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        minimumCapacity: Index<Element>.Count
+    ) where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         let storage = S.create(minimumCapacity: minimumCapacity)
         self.init(
             header: Buffer.Ring.Header(capacity: storage.capacity),
@@ -38,7 +40,8 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
     @usableFromInline
-    mutating func _pushBack(_ element: consuming S.Element) -> S.Element? where S: Store.Ledgered.`Protocol` {
+    mutating func _pushBack(_ element: consuming S.Element) -> S.Element?
+    where S: Store.Ledgered.`Protocol` {
         if header.isFull { return element }
         Buffer.Ring.pushBack(consume element, header: &header, storage: &storage)
         return nil
@@ -50,7 +53,8 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     }
 
     @usableFromInline
-    mutating func _pushFront(_ element: consuming S.Element) -> S.Element? where S: Store.Ledgered.`Protocol` {
+    mutating func _pushFront(_ element: consuming S.Element) -> S.Element?
+    where S: Store.Ledgered.`Protocol` {
         if header.isFull { return element }
         Buffer.Ring.pushFront(consume element, header: &header, storage: &storage)
         return nil

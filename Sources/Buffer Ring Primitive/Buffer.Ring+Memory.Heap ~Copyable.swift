@@ -99,7 +99,11 @@ extension Buffer.Ring where S: ~Copyable {
     ) -> S.Element where S: Store.Ledgered.`Protocol` {
         let newCount = header.count.subtract.saturating(.one)
         let lastOffset = Index<S.Element>.Offset(fromZero: newCount.map(Ordinal.init))
-        let lastSlot = Index.Modular.advanced(header.head, by: lastOffset, capacity: header.capacity)
+        let lastSlot = Index.Modular.advanced(
+            header.head,
+            by: lastOffset,
+            capacity: header.capacity
+        )
 
         let element = storage.move(at: lastSlot)
 

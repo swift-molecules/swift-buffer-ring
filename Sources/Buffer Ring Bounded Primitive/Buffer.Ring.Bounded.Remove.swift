@@ -5,7 +5,9 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 
 extension Buffer.Ring.Bounded.Remove where S: ~Copyable {
     /// The typed inout accessor view that `remove` yields, projecting `remove.all()`.
-    public typealias View = Property<Buffer<S>.Ring.Remove, Buffer<S>.Ring.Bounded>.Inout.Typed<S.Element>
+    public typealias View = Property<Buffer<S>.Ring.Remove, Buffer<S>.Ring.Bounded>.Inout.Typed<
+        S.Element
+    >
 }
 
 // MARK: - Remove Operations (~Copyable)

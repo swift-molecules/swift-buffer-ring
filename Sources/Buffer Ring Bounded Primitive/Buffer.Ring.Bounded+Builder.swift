@@ -32,7 +32,8 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     @inlinable
     public init<E: ~Copyable>(
         minimumCapacity: Index<E>.Count,
-        @Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring.Builder _ builder: () -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        @Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring.Builder _ builder: () ->
+            Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
     ) throws(Self.Error) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         var dynamic = builder()
         guard dynamic.count <= minimumCapacity else {

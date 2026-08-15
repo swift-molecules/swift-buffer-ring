@@ -47,7 +47,10 @@ extension Buffer.Ring: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~
     /// push-back, minus growth (growth is a column op, not a seam op).
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
-        precondition(slot == header.count.map(Ordinal.init), "ring seam: initialize is lawful only at the back (slot == count)")
+        precondition(
+            slot == header.count.map(Ordinal.init),
+            "ring seam: initialize is lawful only at the back (slot == count)"
+        )
         precondition(!header.isFull, "ring seam: initialize on a full ring")
         let tail = Index.Modular.advanced(
             header.head,
@@ -72,7 +75,10 @@ extension Buffer.Ring: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~
             return element
         }
         let newCount = header.count.subtract.saturating(.one)
-        precondition(slot == newCount.map(Ordinal.init), "ring seam: move is lawful only at the front or the back")
+        precondition(
+            slot == newCount.map(Ordinal.init),
+            "ring seam: move is lawful only at the front or the back"
+        )
         let last = Index.Modular.advanced(
             header.head,
             by: Index<S.Element>.Offset(fromZero: newCount.map(Ordinal.init)),

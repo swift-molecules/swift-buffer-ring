@@ -16,7 +16,9 @@ extension Buffer.Ring where S: ~Copyable {
     /// The actual capacity may be larger than requested per H6 —
     /// `header.capacity` is set from `storage.capacity`.
     @inlinable
-    public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(minimumCapacity: Index<Element>.Count)
+    public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        minimumCapacity: Index<Element>.Count
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         let storage = S.create(minimumCapacity: minimumCapacity)
         self.init(
@@ -46,7 +48,9 @@ extension Buffer.Ring where S: ~Copyable {
 
     /// Ensures the buffer can hold at least `minimumCapacity` elements.
     @inlinable
-    public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
+    public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ minimumCapacity: Index<Element>.Count
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if minimumCapacity > header.capacity {
             _growTo(minimumCapacity)
@@ -66,7 +70,9 @@ extension Buffer.Ring where S: ~Copyable {
     }
 
     @inlinable
-    package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
+    package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ minimumCapacity: Index<Element>.Count
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var newStorage = S.create(minimumCapacity: minimumCapacity)
         // Read the new capacity before `newStorage` is consumed by the
@@ -104,7 +110,8 @@ extension Buffer.Ring where S: ~Copyable {
     ///
     /// - Complexity: O(n) where n is the number of elements.
     @inlinable
-    public mutating func compact<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>() where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
+    public mutating func compact<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>()
+    where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         guard header.count < header.capacity else { return }
         if header.isEmpty {
             storage = S.create(minimumCapacity: .zero)
@@ -120,7 +127,9 @@ extension Buffer.Ring where S: ~Copyable {
 extension Buffer.Ring where S: ~Copyable {
 
     @usableFromInline
-    mutating func _pushBack<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ element: consuming Element)
+    mutating func _pushBack<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ element: consuming Element
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if header.isFull { _grow() }
         Self.pushBack(consume element, header: &header, storage: &storage)
@@ -133,7 +142,9 @@ extension Buffer.Ring where S: ~Copyable {
     }
 
     @usableFromInline
-    mutating func _pushFront<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ element: consuming Element)
+    mutating func _pushFront<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ element: consuming Element
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if header.isFull { _grow() }
         Self.pushFront(consume element, header: &header, storage: &storage)
@@ -157,14 +168,18 @@ extension Buffer.Ring where S: ~Copyable {
 
     /// Pushes an element to the back of the ring (grows if full).
     @inlinable
-    public mutating func pushBack<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ element: consuming Element)
+    public mutating func pushBack<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ element: consuming Element
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         _pushBack(consume element)
     }
 
     /// Pushes an element to the front of the ring (grows if full).
     @inlinable
-    public mutating func pushFront<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ element: consuming Element)
+    public mutating func pushFront<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ element: consuming Element
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         _pushFront(consume element)
     }

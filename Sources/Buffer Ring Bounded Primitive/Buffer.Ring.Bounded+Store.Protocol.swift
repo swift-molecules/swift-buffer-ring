@@ -35,17 +35,32 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
     @inlinable
     public subscript(slot: Index<S.Element>) -> S.Element {
         _read {
-            yield storage[Index.Modular.physical(forLogical: slot, head: header.head, capacity: header.capacity)]
+            yield storage[
+                Index.Modular.physical(
+                    forLogical: slot,
+                    head: header.head,
+                    capacity: header.capacity
+                )
+            ]
         }
         _modify {
-            yield &storage[Index.Modular.physical(forLogical: slot, head: header.head, capacity: header.capacity)]
+            yield &storage[
+                Index.Modular.physical(
+                    forLogical: slot,
+                    head: header.head,
+                    capacity: header.capacity
+                )
+            ]
         }
     }
 
     /// Initializes the slot at the BACK (`slot == count`).
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
-        precondition(slot == header.count.map(Ordinal.init), "ring seam: initialize is lawful only at the back (slot == count)")
+        precondition(
+            slot == header.count.map(Ordinal.init),
+            "ring seam: initialize is lawful only at the back (slot == count)"
+        )
         precondition(!header.isFull, "ring seam: initialize on a full ring")
         let tail = Index.Modular.advanced(
             header.head,
@@ -70,7 +85,10 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
             return element
         }
         let newCount = header.count.subtract.saturating(.one)
-        precondition(slot == newCount.map(Ordinal.init), "ring seam: move is lawful only at the front or the back")
+        precondition(
+            slot == newCount.map(Ordinal.init),
+            "ring seam: move is lawful only at the front or the back"
+        )
         let last = Index.Modular.advanced(
             header.head,
             by: Index<S.Element>.Offset(fromZero: newCount.map(Ordinal.init)),

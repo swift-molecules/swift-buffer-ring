@@ -5,7 +5,9 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 
 extension Buffer.Ring.Bounded.Push where S: ~Copyable {
     /// The typed inout accessor view that `push` yields, projecting `push.back(_:)` and `push.front(_:)`.
-    public typealias View = Property<Buffer<S>.Ring.Push, Buffer<S>.Ring.Bounded>.Inout.Typed<S.Element>
+    public typealias View = Property<Buffer<S>.Ring.Push, Buffer<S>.Ring.Bounded>.Inout.Typed<
+        S.Element
+    >
 }
 
 // MARK: - Push Operations (~Copyable)
