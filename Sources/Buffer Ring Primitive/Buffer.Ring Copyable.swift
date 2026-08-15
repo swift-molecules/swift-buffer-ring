@@ -39,7 +39,9 @@ where
         return base.value.storage[
             Index.Modular.advanced(
                 base.value.header.head,
-                by: Index<Element>.Offset(fromZero: base.value.header.count.subtract.saturating(.one).map(Ordinal.init)),
+                by: Index<Element>.Offset(
+                    fromZero: base.value.header.count.subtract.saturating(.one).map(Ordinal.init)
+                ),
                 capacity: base.value.header.capacity
             )
         ]

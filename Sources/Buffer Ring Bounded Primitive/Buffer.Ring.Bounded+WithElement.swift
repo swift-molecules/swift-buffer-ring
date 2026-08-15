@@ -23,7 +23,9 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
             storage[
                 Index.Modular.advanced(
                     header.head,
-                    by: Index<S.Element>.Offset(fromZero: header.count.subtract.saturating(.one).map(Ordinal.init)),
+                    by: Index<S.Element>.Offset(
+                        fromZero: header.count.subtract.saturating(.one).map(Ordinal.init)
+                    ),
                     capacity: header.capacity
                 )
             ]

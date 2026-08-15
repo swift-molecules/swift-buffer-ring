@@ -58,8 +58,11 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildExpression<E: ~Copyable>(
             _ expression: consuming E
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-            var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .one)
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+                minimumCapacity: .one
+            )
             result.push.back(consume expression)
             return result
         }
@@ -67,8 +70,10 @@ extension Buffer.Ring where S: ~Copyable {
         /// Passes a ring expression through unchanged as a component.
         @inlinable
         public static func buildExpression<E: ~Copyable>(
-            _ expression: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            _ expression:
+                consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             consume expression
         }
 
@@ -76,8 +81,11 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildExpression<E: ~Copyable>(
             _ expression: consuming E?
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-            var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .zero)
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+                minimumCapacity: .zero
+            )
             if let value = consume expression {
                 result.push.back(consume value)
             }
@@ -90,7 +98,8 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildPartialBlock<E: ~Copyable>(
             first: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             consume first
         }
 
@@ -98,22 +107,28 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildPartialBlock<E: ~Copyable>(
             first: Void
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-            Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .zero)
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+                minimumCapacity: .zero
+            )
         }
 
         /// Begins a block from an unreachable (`Never`) statement.
         @inlinable
         public static func buildPartialBlock<E: ~Copyable>(
             first: Never
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {}
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {}
 
         /// Appends the next ring's elements onto the accumulated ring, preserving order.
         @inlinable
         public static func buildPartialBlock<E: ~Copyable>(
-            accumulated: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring,
+            accumulated:
+                consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring,
             next: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             var result = consume accumulated
             var rest = consume next
             while !rest.isEmpty {
@@ -126,8 +141,12 @@ extension Buffer.Ring where S: ~Copyable {
 
         /// Builds an empty ring from an empty block.
         @inlinable
-        public static func buildBlock<E: ~Copyable>() -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-            Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .zero)
+        public static func buildBlock<E: ~Copyable>()
+            -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+                minimumCapacity: .zero
+            )
         }
 
         // MARK: - Control Flow
@@ -135,19 +154,24 @@ extension Buffer.Ring where S: ~Copyable {
         /// Contributes the component of an `if`-without-`else` block, or an empty ring when absent.
         @inlinable
         public static func buildOptional<E: ~Copyable>(
-            _ component: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring?
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+            _ component:
+                consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring?
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             if let result = consume component {
                 return consume result
             }
-            return Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .zero)
+            return Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+                minimumCapacity: .zero
+            )
         }
 
         /// Selects the first branch of an `if`/`else`.
         @inlinable
         public static func buildEither<E: ~Copyable>(
             first: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             consume first
         }
 
@@ -155,7 +179,8 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildEither<E: ~Copyable>(
             second: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             consume second
         }
 
@@ -165,7 +190,8 @@ extension Buffer.Ring where S: ~Copyable {
         @inlinable
         public static func buildLimitedAvailability<E: ~Copyable>(
             _ component: consuming Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
-        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+        where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             consume component
         }
     }
@@ -188,7 +214,8 @@ extension Buffer.Ring where S: ~Copyable {
     /// }
     /// ```
     @inlinable
-    public init<E: ~Copyable>(@Buffer.Ring.Builder _ builder: () -> Self) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    public init<E: ~Copyable>(@Buffer.Ring.Builder _ builder: () -> Self)
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         self = builder()
     }
 }
@@ -199,9 +226,13 @@ extension Buffer.Ring.Builder where S: ~Copyable {
     /// Bulk-add a Swift.Sequence to the back of the ring without
     /// per-iteration allocation.
     @inlinable
-    public static func buildExpression<E, Seq: Swift.Sequence>(_ expression: Seq) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
+    public static func buildExpression<E, Seq: Swift.Sequence>(
+        _ expression: Seq
+    ) -> Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring
     where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable, Seq.Element == E {
-        var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(minimumCapacity: .zero)
+        var result = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>>.Ring(
+            minimumCapacity: .zero
+        )
         for value in expression {
             result.push.back(value)
         }

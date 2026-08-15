@@ -25,7 +25,10 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     ///   - capacity: The fixed capacity for the buffer.
     /// - Throws: ``Error/capacityExceeded`` if `elements.count` exceeds `capacity`.
     @inlinable
-    public init<Element, Resource: Memory.Growable & ~Copyable>(_ elements: [Element], capacity: UInt) throws(Self.Error) where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
+    public init<Element, Resource: Memory.Growable & ~Copyable>(
+        _ elements: [Element],
+        capacity: UInt
+    ) throws(Self.Error) where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         guard elements.count <= Int(capacity) else { throw .capacityExceeded }
         var buffer = Self(minimumCapacity: Index<Element>.Count(Cardinal(capacity)))
         for element in elements {
@@ -59,7 +62,9 @@ where
         return base.value.storage[
             Index.Modular.advanced(
                 base.value.header.head,
-                by: Index<Element>.Offset(fromZero: base.value.header.count.subtract.saturating(.one).map(Ordinal.init)),
+                by: Index<Element>.Offset(
+                    fromZero: base.value.header.count.subtract.saturating(.one).map(Ordinal.init)
+                ),
                 capacity: base.value.header.capacity
             )
         ]

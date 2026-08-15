@@ -45,4 +45,5 @@ extension Buffer.Ring where S: ~Copyable {
 /// ## Non-Goals
 ///
 /// - Not a shared concurrent ring buffer.
-extension Buffer.Ring.Bounded: @unsafe @unchecked Sendable where S: Store.`Protocol` & ~Copyable & Sendable {}
+extension Buffer.Ring.Bounded: @unsafe @unchecked Sendable
+where S: Store.`Protocol` & ~Copyable & Sendable {}

@@ -30,7 +30,10 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
         } else {
             self = .two(
                 first: header.head..<header.capacity.map(Ordinal.init),
-                second: .zero..<Index<Element>.Count(tail).subtract.saturating(header.capacity).map(Ordinal.init)
+                second:
+                    .zero..<Index<Element>.Count(tail).subtract.saturating(header.capacity).map(
+                        Ordinal.init
+                    )
             )
         }
     }
@@ -57,7 +60,10 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
         } else {
             self = .two(
                 first: headIndex..<slotCapacity.map(Ordinal.init),
-                second: .zero..<Index<Element>.Count(tail).subtract.saturating(slotCapacity).map(Ordinal.init)
+                second:
+                    .zero..<Index<Element>.Count(tail).subtract.saturating(slotCapacity).map(
+                        Ordinal.init
+                    )
             )
         }
     }

@@ -5,7 +5,9 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 
 extension Buffer.Ring.Bounded.Pop where S: ~Copyable {
     /// The typed inout accessor view that `pop` yields, projecting `pop.front()` and `pop.back()`.
-    public typealias View = Property<Buffer<S>.Ring.Pop, Buffer<S>.Ring.Bounded>.Inout.Typed<S.Element>
+    public typealias View = Property<Buffer<S>.Ring.Pop, Buffer<S>.Ring.Bounded>.Inout.Typed<
+        S.Element
+    >
 }
 
 // MARK: - Pop Operations (~Copyable)
