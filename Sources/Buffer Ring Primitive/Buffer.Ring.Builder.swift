@@ -122,6 +122,20 @@ extension Buffer.Ring where S: ~Copyable {
         where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {}
 
         /// Appends the next ring's elements onto the accumulated ring, preserving order.
+        ///
+        /// The drain is counted, not condition-driven: `remaining` is read once
+        /// from `rest.count` before the loop and decremented per iteration.
+        ///
+        /// > Warning: Do NOT rewrite this as `while !rest.isEmpty`. At `-O`, in
+        /// > this same-type-constrained generic context, the loop condition kept
+        /// > observing a pre-mutation `rest.count`: `rest.pop.front()` drained
+        /// > the ring but `rest.isEmpty` never became `true`, so the loop never
+        /// > terminated and the unbounded `result.push.back` growth exhausted
+        /// > memory. Symptom: the Linux · release leg died mid-run with no test
+        /// > output; the same build ballooned past 3 GB locally, while debug
+        /// > passed. Reduced reproducer: `Ring { 1; 2 }` — two builder elements
+        /// > are enough. The counted form is stale-load-proof because the trip
+        /// > count is fixed before the first mutation.
         @inlinable
         public static func buildPartialBlock<E: ~Copyable>(
             accumulated:
@@ -131,8 +145,11 @@ extension Buffer.Ring where S: ~Copyable {
         where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
             var result = consume accumulated
             var rest = consume next
-            while !rest.isEmpty {
-                result.push.back(rest.pop.front())
+            var remaining = rest.count
+            while remaining > .zero {
+                remaining = remaining.subtract.saturating(.one)
+                let element = rest.pop.front()
+                result.push.back(element)
             }
             return result
         }

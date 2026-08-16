@@ -40,8 +40,15 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
             throw .capacityExceeded
         }
         self.init(minimumCapacity: minimumCapacity)
-        while !dynamic.isEmpty {
-            _ = self.push.back(dynamic.pop.front())
+        // Counted drain, not `while !dynamic.isEmpty` — see the warning on
+        // `Buffer.Ring.Builder.buildPartialBlock(accumulated:next:)`: at `-O` the
+        // condition form kept observing a pre-mutation `dynamic.count`, never
+        // terminated, and exhausted memory.
+        var remaining = dynamic.count
+        while remaining > .zero {
+            remaining = remaining.subtract.saturating(.one)
+            let element = dynamic.pop.front()
+            _ = self.push.back(element)
         }
     }
 }
