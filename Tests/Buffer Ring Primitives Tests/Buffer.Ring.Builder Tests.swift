@@ -93,7 +93,10 @@ extension `Buffer.Ring.Builder Tests`.Unit {
     func `Two element block drains and terminates`() {
         let buffer: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring = Buffer<
             Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>
-        >.Ring { 1; 2 }
+        >.Ring {
+            1
+            2
+        }
         #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == [1, 2])
     }
 
