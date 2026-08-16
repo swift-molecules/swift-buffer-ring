@@ -85,6 +85,18 @@ extension `Buffer.Ring.Builder Tests`.Unit {
         #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == [1, 2, 3])
     }
 
+    /// Release-mode regression fixture for #8 / swift-ownership-primitives#13:
+    /// two builder elements are enough to drive the `while !rest.isEmpty` drain
+    /// in `buildPartialBlock(accumulated:next:)`. At -O, before the `~Escapable`
+    /// inout-view initializers became `@_transparent`, this never terminated.
+    @Test
+    func `Two element block drains and terminates`() {
+        let buffer: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring = Buffer<
+            Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>
+        >.Ring { 1; 2 }
+        #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == [1, 2])
+    }
+
     @Test
     func `Optional element - some`() {
         let value: Int? = 42
