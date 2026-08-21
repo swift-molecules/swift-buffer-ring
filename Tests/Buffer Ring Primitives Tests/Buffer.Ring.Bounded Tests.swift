@@ -11,8 +11,6 @@ struct `Buffer.Ring.Bounded Tests` {
     @Suite struct Integration {}
 }
 
-// MARK: - Unit
-
 extension `Buffer.Ring.Bounded Tests`.Unit {
 
     @Test
@@ -22,7 +20,6 @@ extension `Buffer.Ring.Bounded Tests`.Unit {
         )
         let cap = buffer.capacity.underlying.rawValue
 
-        // Fill to capacity
         var i: UInt = 0
         while i < cap {
             let rejected = buffer.push.back(Int(i))
@@ -32,7 +29,6 @@ extension `Buffer.Ring.Bounded Tests`.Unit {
         let bufferIsFull = buffer.isFull
         #expect(bufferIsFull)
 
-        // Next push is rejected
         let rejected = buffer.push.back(999)
         #expect(rejected == 999)
     }
@@ -58,7 +54,7 @@ extension `Buffer.Ring.Bounded Tests`.Unit {
     func `peekFront and peekBack (Copyable)`() throws {
         let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring
             .Bounded([10, 20, 30], capacity: 4)
-        // Peek-views-only — see the lifetime-checker note in the growable peek test.
+
         let bufferPeekFront = buffer.peek.front
         #expect(bufferPeekFront == 10)
         let bufferPeekBack = buffer.peek.back
@@ -78,8 +74,7 @@ extension `Buffer.Ring.Bounded Tests`.Unit {
     func `Iterable iteration (Copyable)`() throws {
         let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring
             .Bounded([10, 20, 30], capacity: 4)
-        // Piecewise dual conformer (Iterable via 2-segment Chunk iterator +
-        // Sequenceable via scalar). `forEach` is the `Sequenceable` borrowing terminal.
+
         var collected: [Int] = []
         buffer.forEach { collected.append($0) }
         #expect(collected == [10, 20, 30])
@@ -99,8 +94,6 @@ extension `Buffer.Ring.Bounded Tests`.Unit {
         #expect(buffer.pop.front() == 20)
     }
 }
-
-// MARK: - Edge Cases
 
 extension `Buffer.Ring.Bounded Tests`.EdgeCase {
 
@@ -134,7 +127,7 @@ extension `Buffer.Ring.Bounded Tests`.EdgeCase {
 
         let rejected = buffer.push.front(999)
         #expect(rejected == 999)
-        // Original elements untouched
+
         let bufferPeekFront = buffer.peek.front
         #expect(bufferPeekFront == 0)
     }
@@ -158,8 +151,6 @@ extension `Buffer.Ring.Bounded Tests`.EdgeCase {
         #expect(buffer.pop.front() == 3)
     }
 }
-
-// MARK: - Integration
 
 extension `Buffer.Ring.Bounded Tests`.Integration {
 
@@ -187,7 +178,6 @@ extension `Buffer.Ring.Bounded Tests`.Integration {
         )
         let cap = Int(buffer.capacity.underlying.rawValue)
 
-        // Fill
         var i = 0
         while i < cap {
             _ = buffer.push.back(i)
@@ -196,7 +186,6 @@ extension `Buffer.Ring.Bounded Tests`.Integration {
         let bufferIsFull = buffer.isFull
         #expect(bufferIsFull)
 
-        // Drain
         var drained: [Int] = []
         buffer.drain { drained.append($0) }
         let bufferIsEmpty = buffer.isEmpty
@@ -204,25 +193,6 @@ extension `Buffer.Ring.Bounded Tests`.Integration {
         #expect(drained.count == cap)
     }
 }
-
-// MARK: - Release-mode regression guard (Finding #12 narrow-shape watchflag)
-//
-// Permanent positive-assertion regression guard for the V11 narrow-shape
-// compiler bug documented at swift-institute/Audits/borrow-pointer-
-// storage-release-miscompile.md finding #12, archived at the experiment
-// swift-institute/Experiments/borrow-pointer-storage-release-miscompile
-// V10/V11 (commit cee7a7a).
-//
-// Buffer.Ring.Bounded is one of ~16 swift-buffer-primitives consumers
-// of Memory.Inline.pointer(at:). Memory.Inline's production shape
-// (`@_rawLayout`-backed `_storage`) is empirically safe in release
-// despite the V11 experiment showing a narrower shape (plain stored
-// ~Copyable field, non-generic) fails. This test asserts the
-// consumer-side safety holds — if a future refactor of either
-// Memory.Inline or Buffer.Ring.Bounded migrates toward the V11 shape,
-// or an optimizer regression breaks the `@_rawLayout` discriminator,
-// the positive assertions flip to failing and the regression is caught
-// before it ships.
 
 extension `Buffer.Ring.Bounded Tests`.Unit {
     @Test

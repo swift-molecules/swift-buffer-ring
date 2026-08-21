@@ -4,13 +4,8 @@ public import Memory_Allocator_Protocol_Primitives
 import Ordinal_Primitives_Standard_Library_Integration
 public import Store_Ledgered_Primitives
 
-// MARK: - Extensions for Ring.Bounded (declared in Core)
-
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
-    /// Creates a bounded ring buffer with at least the given capacity (any growable column).
-    ///
-    /// Actual capacity comes from `storage.capacity` per H6.
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         minimumCapacity: Index<Element>.Count
@@ -22,20 +17,15 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
         )
     }
 
-    /// The number of elements in the buffer.
     @inlinable
     public var count: Index<S.Element>.Count { header.count }
 
-    /// The total slot capacity.
     @inlinable
     public var capacity: Index<S.Element>.Count { header.capacity }
 
-    /// Whether the buffer is at capacity.
     @inlinable
     public var isFull: Bool { header.isFull }
 }
-
-// MARK: - Internal Mutations
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
@@ -71,13 +61,8 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     }
 }
 
-// MARK: - Property.Inout.Typed (.push, .pop, .peek, .remove)
-
 extension Buffer.Ring.Bounded where S: ~Copyable {
-    /// Namespaced push operations.
-    ///
-    /// - `buffer.push.back(element)` — pushes to the back, returning the element if the ceiling is reached.
-    /// - `buffer.push.front(element)` — pushes to the front, returning the element if the ceiling is reached.
+
     @inlinable
     public var push: Push.View {
         mutating _read {
@@ -89,10 +74,6 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
         }
     }
 
-    /// Namespaced pop operations.
-    ///
-    /// - `buffer.pop.front()` — pops from the front.
-    /// - `buffer.pop.back()` — pops from the back.
     @inlinable
     public var pop: Pop.View {
         mutating _read {
@@ -104,10 +85,6 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
         }
     }
 
-    /// Namespaced peek operations (read-only).
-    ///
-    /// - `buffer.peek.front` — peeks at the front element.
-    /// - `buffer.peek.back` — peeks at the back element.
     @inlinable
     public var peek: Peek.View {
         _read {
@@ -115,9 +92,6 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
         }
     }
 
-    /// Namespaced remove operations.
-    ///
-    /// - `buffer.remove.all()` — removes all elements.
     @inlinable
     public var remove: Remove.View {
         mutating _read {

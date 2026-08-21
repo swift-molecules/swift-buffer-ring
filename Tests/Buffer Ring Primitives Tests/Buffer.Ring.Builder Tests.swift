@@ -1,21 +1,8 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Buffer_Ring_Primitives
 import Buffer_Ring_Primitives_Test_Support
 import Memory_Heap_Primitives
 import Storage_Contiguous_Primitives
 import Testing
-
-// MARK: - Test Suite Structure
 
 @Suite
 struct `Buffer.Ring.Builder Tests` {
@@ -26,14 +13,10 @@ struct `Buffer.Ring.Builder Tests` {
     @Suite struct StaticMethods {}
 }
 
-// MARK: - Move-Only Test Fixture
-
 private struct Move: ~Copyable {
     let value: Int
     init(_ value: Int) { self.value = value }
 }
-
-// MARK: - Iteration Helpers (drain via pop.front)
 
 extension `Buffer.Ring.Builder Tests` {
     fileprivate static func collected(
@@ -60,8 +43,6 @@ extension `Buffer.Ring.Builder Tests` {
     }
 }
 
-// MARK: - Unit Tests
-
 extension `Buffer.Ring.Builder Tests`.Unit {
 
     @Test
@@ -81,14 +62,10 @@ extension `Buffer.Ring.Builder Tests`.Unit {
             2
             3
         }
-        // pop.front returns elements in declaration order (FIFO)
+
         #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == [1, 2, 3])
     }
 
-    /// Release-mode regression fixture for #8 / swift-ownership-primitives#13:
-    /// two builder elements are enough to drive the `while !rest.isEmpty` drain
-    /// in `buildPartialBlock(accumulated:next:)`. At -O, before the `~Escapable`
-    /// inout-view initializers became `@_transparent`, this never terminated.
     @Test
     func `Two element block drains and terminates`() {
         let buffer: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring = Buffer<
@@ -143,8 +120,6 @@ extension `Buffer.Ring.Builder Tests`.Unit {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Control Flow
 
 extension `Buffer.Ring.Builder Tests`.Unit {
 
@@ -223,8 +198,6 @@ extension `Buffer.Ring.Builder Tests`.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension `Buffer.Ring.Builder Tests`.EdgeCase {
 
     @Test
@@ -272,8 +245,6 @@ extension `Buffer.Ring.Builder Tests`.EdgeCase {
     }
 }
 
-// MARK: - Integration
-
 extension `Buffer.Ring.Builder Tests`.Integration {
 
     @Test
@@ -298,12 +269,10 @@ extension `Buffer.Ring.Builder Tests`.Integration {
             3
         }
         buffer.push.front(1)
-        // After push.front(1): buffer is [1, 2, 3] front-to-back
+
         #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == [1, 2, 3])
     }
 }
-
-// MARK: - NonCopyable
 
 extension `Buffer.Ring.Builder Tests`.NonCopyable {
 
@@ -383,8 +352,6 @@ extension `Buffer.Ring.Builder Tests`.NonCopyable {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Static Method Tests
 
 extension `Buffer.Ring.Builder Tests`.StaticMethods {
 

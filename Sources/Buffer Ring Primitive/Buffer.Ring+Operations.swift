@@ -7,14 +7,8 @@ public import Storage_Contiguous_Primitives
 public import Storage_Primitive
 public import Store_Ledgered_Primitives
 
-// MARK: - Extensions for Ring
-
 extension Buffer.Ring where S: ~Copyable {
 
-    /// Creates a growable ring buffer with at least the given capacity.
-    ///
-    /// The actual capacity may be larger than requested per H6 —
-    /// `header.capacity` is set from `storage.capacity`.
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         minimumCapacity: Index<Element>.Count
@@ -27,26 +21,21 @@ extension Buffer.Ring where S: ~Copyable {
         )
     }
 
-    /// Creates an empty growable ring buffer (the substrate decides the start capacity).
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>()
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         self.init(minimumCapacity: Index<Element>.Count.zero)
     }
 
-    /// The number of elements in the buffer.
     @inlinable
     public var count: Index<S.Element>.Count { header.count }
 
-    /// The total slot capacity.
     @inlinable
     public var capacity: Index<S.Element>.Count { header.capacity }
 
-    /// Whether the buffer is at capacity.
     @inlinable
     public var isFull: Bool { header.isFull }
 
-    /// Ensures the buffer can hold at least `minimumCapacity` elements.
     @inlinable
     public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         _ minimumCapacity: Index<Element>.Count
@@ -56,8 +45,6 @@ extension Buffer.Ring where S: ~Copyable {
             _growTo(minimumCapacity)
         }
     }
-
-    // MARK: - Growth (internal)
 
     @inlinable
     package mutating func _grow<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>()
@@ -75,18 +62,10 @@ extension Buffer.Ring where S: ~Copyable {
     )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var newStorage = S.create(minimumCapacity: minimumCapacity)
-        // Read the new capacity before `newStorage` is consumed by the
-        // assignment below — the substrate is `~Copyable`, so `storage = newStorage`
-        // moves it and any later `newStorage.capacity` would be a use-after-consume.
+
         let newCapacity = newStorage.capacity
         let oldCount = header.count
-        // Relocate into LINEARIZED order element-wise via the seam: each occupied physical run
-        // (one or two — the wrapped ring) moves to its linear destination. The seam's per-op
-        // ledger updates are prefix-shaped (its docstring routes arbitrary-slot disciplines
-        // through explicit `initialization` syncs), so both ledgers are settled below: the old
-        // ledger's count reaches zero through the moves (the dropped backing's oracle destroys
-        // nothing), and the new storage ends `.linear(oldCount)` — re-synced from the rebuilt
-        // header, the ring's sync invariant.
+
         header.initialization.linearize { range, offset in
             var src = range.lowerBound
             var dst = offset
@@ -99,16 +78,10 @@ extension Buffer.Ring where S: ~Copyable {
         storage = newStorage
         header = Self.Header(capacity: newCapacity)
         header.count = oldCount
-        // head is 0 after linearization
+
         storage.initialization = header.initialization
     }
 
-    /// Reduces capacity to match the current count, releasing unused memory.
-    ///
-    /// After calling this method, `capacity == count`. The ring buffer is
-    /// linearized during compaction.
-    ///
-    /// - Complexity: O(n) where n is the number of elements.
     @inlinable
     public mutating func compact<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>()
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
@@ -121,8 +94,6 @@ extension Buffer.Ring where S: ~Copyable {
         _growTo(header.count)
     }
 }
-
-// MARK: - Internal Mutations
 
 extension Buffer.Ring where S: ~Copyable {
 
@@ -162,11 +133,6 @@ extension Buffer.Ring where S: ~Copyable {
         Self.deinitializeAll(header: &header, storage: &storage)
     }
 
-    // MARK: - Direct push/pop/remove (storage-generic; the `.push`/`.pop`/`.remove`
-    // Property-view ops stay heap-pinned — generalizing a Property.Inout.Typed extension
-    // over an arbitrary storage S hits the value-generic same-type wall. #12a.
-
-    /// Pushes an element to the back of the ring (grows if full).
     @inlinable
     public mutating func pushBack<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         _ element: consuming Element
@@ -175,7 +141,6 @@ extension Buffer.Ring where S: ~Copyable {
         _pushBack(consume element)
     }
 
-    /// Pushes an element to the front of the ring (grows if full).
     @inlinable
     public mutating func pushFront<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         _ element: consuming Element
@@ -184,25 +149,18 @@ extension Buffer.Ring where S: ~Copyable {
         _pushFront(consume element)
     }
 
-    /// Removes and returns the front element.
-    ///
-    /// - Precondition: The buffer is not empty.
     @inlinable
     public mutating func popFront() -> S.Element
     where S: Store.Ledgered.`Protocol` {
         _popFront()
     }
 
-    /// Removes and returns the back element.
-    ///
-    /// - Precondition: The buffer is not empty.
     @inlinable
     public mutating func popBack() -> S.Element
     where S: Store.Ledgered.`Protocol` {
         _popBack()
     }
 
-    /// Removes all elements.
     @inlinable
     public mutating func removeAll()
     where S: Store.Ledgered.`Protocol` {
@@ -210,13 +168,8 @@ extension Buffer.Ring where S: ~Copyable {
     }
 }
 
-// MARK: - Property.Inout.Typed (.push, .pop, .peek, .remove)
-
 extension Buffer.Ring where S: ~Copyable {
-    /// Namespaced push operations.
-    ///
-    /// - `buffer.push.back(element)` — pushes to the back.
-    /// - `buffer.push.front(element)` — pushes to the front.
+
     @inlinable
     public var push: Push.View {
         mutating _read {
@@ -228,10 +181,6 @@ extension Buffer.Ring where S: ~Copyable {
         }
     }
 
-    /// Namespaced pop operations.
-    ///
-    /// - `buffer.pop.front()` — pops from the front.
-    /// - `buffer.pop.back()` — pops from the back.
     @inlinable
     public var pop: Pop.View {
         mutating _read {
@@ -243,10 +192,6 @@ extension Buffer.Ring where S: ~Copyable {
         }
     }
 
-    /// Namespaced peek operations (read-only).
-    ///
-    /// - `buffer.peek.front` — peeks at the front element.
-    /// - `buffer.peek.back` — peeks at the back element.
     @inlinable
     public var peek: Peek.View {
         _read {
@@ -254,10 +199,6 @@ extension Buffer.Ring where S: ~Copyable {
         }
     }
 
-    /// Namespaced remove operations.
-    ///
-    /// - `buffer.remove.all()` — removes all elements.
-    /// - `buffer.remove.all(keepingCapacity:)` — removes all with capacity option.
     @inlinable
     public var remove: Remove.View {
         mutating _read {

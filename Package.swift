@@ -12,10 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // MARK: - Type modules (lean ~Copyable types; Copyable-requiring conformances live in the ops modules per [MOD-004])
+
         .library(name: "Buffer Ring Primitive", targets: ["Buffer Ring Primitive"]),
         .library(name: "Buffer Ring Bounded Primitive", targets: ["Buffer Ring Bounded Primitive"]),
-        // MARK: - Ops modules (one per variant); `Buffer Ring Primitives` doubles as the [MOD-005] umbrella
+
         .library(name: "Buffer Ring Primitives", targets: ["Buffer Ring Primitives"]),
         .library(
             name: "Buffer Ring Bounded Primitives",
@@ -75,7 +75,7 @@ let package = Package(
             url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git",
             branch: "main"
         ),
-        // W3.1 .Small compile-probe dependency (test-only): the Memory.Small growable leaf.
+
         .package(
             url: "https://github.com/swift-primitives/swift-memory-small-primitives.git",
             branch: "main"
@@ -83,7 +83,6 @@ let package = Package(
     ],
     targets: [
 
-        // MARK: - Type modules — lean ~Copyable types + @usableFromInline internal ops co-located with storage ([MOD-036])
         .target(
             name: "Buffer Ring Primitive",
             dependencies: [
@@ -152,10 +151,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Ops modules — Copyable-requiring conformances isolated per [MOD-004].
-        //         `Buffer Ring Primitives` (the base conformances module) doubles as the
-        //         [MOD-005] umbrella: it re-exports every variant module (two module forms only —
-        //         `… Primitive` type modules and `… Primitives` ops modules).
         .target(
             name: "Buffer Ring Primitives",
             dependencies: [
@@ -207,7 +202,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
         .target(
             name: "Buffer Ring Primitives Test Support",
             dependencies: [
@@ -231,7 +225,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "Buffer Ring Primitives Tests",
             dependencies: [

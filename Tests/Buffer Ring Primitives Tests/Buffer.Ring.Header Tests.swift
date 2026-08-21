@@ -10,8 +10,6 @@ struct `Buffer.Ring.Header Tests` {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit
-
 extension `Buffer.Ring.Header Tests`.Unit {
 
     @Test
@@ -63,7 +61,7 @@ extension `Buffer.Ring.Header Tests`.Unit {
             capacity: 8
         )
         header.count = 3
-        // head=0, count=3, capacity=8 → .one(0..<3)
+
         switch header.initialization {
         case .one(let range):
             #expect(range.lowerBound == 0)
@@ -81,7 +79,7 @@ extension `Buffer.Ring.Header Tests`.Unit {
         )
         header.head = 3
         header.count = 3
-        // head=3, count=3, capacity=4 → wraps: first=[3,4), second=[0,2)
+
         switch header.initialization {
         case .two(let first, let second):
             #expect(first.lowerBound == 3)
@@ -106,8 +104,6 @@ extension `Buffer.Ring.Header Tests`.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension `Buffer.Ring.Header Tests`.EdgeCase {
 
     @Test
@@ -117,7 +113,7 @@ extension `Buffer.Ring.Header Tests`.EdgeCase {
         )
         header.head = 3
         header.count = 1
-        // head=3 is within capacity — should be valid
+
         switch header.initialization {
         case .one(let range):
             #expect(range.lowerBound == 3)
@@ -134,7 +130,7 @@ extension `Buffer.Ring.Header Tests`.EdgeCase {
             capacity: 4
         )
         header.count = 4
-        // head=0, full → .one(0..<4)
+
         switch header.initialization {
         case .one(let range):
             #expect(range.lowerBound == 0)
@@ -145,7 +141,7 @@ extension `Buffer.Ring.Header Tests`.EdgeCase {
         }
 
         header.head = 2
-        // head=2, full → .two([2,4), [0,2))
+
         switch header.initialization {
         case .two(let first, let second):
             #expect(first.lowerBound == 2)

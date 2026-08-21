@@ -4,16 +4,8 @@ import Storage_Protocol_Primitives
 public import Store_Initialization_Primitives
 public import Store_Protocol_Primitives
 
-//
-//  Store.Initialization.swift
-//  swift-buffer-primitives
-//
-//  Created by Coen ten Thije Boonkkamp on 04/02/2026.
-//
-
-// Post-split respell (C6 wall, consumer instance): see buffer-linear's twin.
 extension Store.Initialization where Element: ~Copyable & ~Escapable {
-    /// Derives the initialized-slot ranges from a ring header, splitting a wrapped ring into its two runs.
+
     @inlinable
     public init<S: Store.`Protocol` & ~Copyable>(
         _ header: Buffer<S>.Ring.Header
@@ -39,9 +31,8 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
     }
 }
 
-// Post-split respell (C6 wall, consumer instance): see buffer-linear's twin.
 extension Store.Initialization where Element: ~Copyable & ~Escapable {
-    /// Derives the initialized-slot ranges from a compile-time-sized cyclic ring header, splitting a wrapped ring into its two runs.
+
     @inlinable
     public init<S: Store.`Protocol` & ~Copyable, let capacity: Int>(
         _ header: Buffer<S>.Ring.Header.Cyclic<capacity>

@@ -10,8 +10,6 @@ struct `Buffer.Ring.Static Tests` {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit
-
 extension `Buffer.Ring.Static Tests`.Unit {
 
     @Test
@@ -110,14 +108,12 @@ extension `Buffer.Ring.Static Tests`.Unit {
         header.head = 5
         header.count = 4
 
-        // Logical 0 → physical 5
         let p0 = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.physicalSlot(
             forLogical: 0,
             header: header
         )
         #expect(p0 == 5)
 
-        // Logical 3 → physical (5+3)%8 = 0
         let p3 = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.physicalSlot(
             forLogical: 3,
             header: header
@@ -166,10 +162,8 @@ extension `Buffer.Ring.Static Tests`.Unit {
             minimumCapacity: cap
         )
 
-        // Start empty
         #expect(header.initialization == .empty)
 
-        // Push one → .one
         Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.pushBack(
             42,
             header: &header,
@@ -180,7 +174,6 @@ extension `Buffer.Ring.Static Tests`.Unit {
         default: Issue.record("Expected .one")
         }
 
-        // Fill capacity, advance head to force wrap
         Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.pushBack(
             43,
             header: &header,
@@ -210,13 +203,11 @@ extension `Buffer.Ring.Static Tests`.Unit {
             storage: &storage
         )
 
-        // Should be wrapping → .two
         switch header.initialization {
         case .two: break
         default: Issue.record("Expected .two for wrapped state")
         }
 
-        // Drain all → .empty
         Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.deinitializeAll(
             header: &header,
             storage: &storage
@@ -224,8 +215,6 @@ extension `Buffer.Ring.Static Tests`.Unit {
         #expect(header.initialization == .empty)
     }
 }
-
-// MARK: - Edge Cases
 
 extension `Buffer.Ring.Static Tests`.EdgeCase {
 
@@ -239,7 +228,6 @@ extension `Buffer.Ring.Static Tests`.EdgeCase {
             minimumCapacity: cap
         )
 
-        // Fill to capacity
         var i = 0
         while i < 4 {
             Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.pushBack(
@@ -252,7 +240,6 @@ extension `Buffer.Ring.Static Tests`.EdgeCase {
         let headerIsFull = header.isFull
         #expect(headerIsFull)
 
-        // Pop two from front
         _ = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.popFront(
             header: &header,
             storage: &storage
@@ -262,7 +249,6 @@ extension `Buffer.Ring.Static Tests`.EdgeCase {
             storage: &storage
         )
 
-        // Push two more — these wrap around
         Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.pushBack(
             100,
             header: &header,
@@ -274,7 +260,6 @@ extension `Buffer.Ring.Static Tests`.EdgeCase {
             storage: &storage
         )
 
-        // Should read: 2, 3, 100, 200
         let a = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.popFront(
             header: &header,
             storage: &storage

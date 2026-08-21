@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Affine_Primitives_Standard_Library_Integration
 import Cyclic_Index_Primitives
 public import Index_Primitives
@@ -17,21 +6,8 @@ import Store_Initialization_Primitives
 public import Store_Ledgered_Primitives
 public import Store_Protocol_Primitives
 
-// MARK: - The seam, under the RING DISCIPLINE (front-anchored, restricted domain)
-//
-// The bounded twin of `Buffer.Ring+Store.Protocol.swift` (ratified ASK-B; the lawful
-// domain is documented there): initialize ONLY at the back; move ONLY at the front
-// (re-anchoring) or the back; the logical subscript covers any live slot; every witness
-// re-syncs the storage ledger from the header. Bounded-ness is invisible to the seam —
-// the seam has no growth op; a full bounded ring simply traps `initialize` like a full
-// growable ring does (growth is the column's affair).
-//
-// The element subscript witness is supplied here GENERICALLY (the bounded buffer's own
-// element subscript is pinned to the heap column — the `Buffer.Linear.Bounded`
-// precedent, 1e75e0c).
 extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~Copyable {
-    /// Logical element access (0 = front; wrap math in the witness); positions
-    /// re-anchor after a front move.
+
     @inlinable
     public subscript(slot: Index<S.Element>) -> S.Element {
         _read {
@@ -54,7 +30,6 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
         }
     }
 
-    /// Initializes the slot at the BACK (`slot == count`).
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
         precondition(
@@ -72,8 +47,6 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
         storage.initialization = .init(header)
     }
 
-    /// Moves the element out at the FRONT (`slot == 0`; re-anchoring) or the BACK
-    /// (`slot == count − 1`).
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(!header.isEmpty, "ring seam: move on an empty ring")
