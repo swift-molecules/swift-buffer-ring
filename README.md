@@ -1,4 +1,4 @@
-# Buffer Ring Primitives
+# Buffer Ring
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -11,7 +11,7 @@ Circular, count-tracked ring buffers over the `Buffer` namespace — double-ende
 A ring buffer keeps its elements in a fixed physical window and wraps the head and tail around it, so neither the front nor the back ever shifts elements — both ends are O(1). Two variants ship here: `Buffer.Ring` (growable) and `Buffer.Ring.Bounded` (fixed-capacity).
 
 ```swift
-import Buffer_Ring_Primitives
+import Buffer_Ring
 
 // These ring buffers pin to heap-backed contiguous storage; alias the spelling once.
 typealias Heap<Element> = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>
@@ -29,7 +29,7 @@ let tail = ring.pop.back()      // 2 — remove from the back
 `Buffer.Ring.Bounded` enforces a hard capacity ceiling. A push into a full buffer is *rejected* and handed straight back, so nothing is silently dropped and the buffer never grows:
 
 ```swift
-import Buffer_Ring_Primitives
+import Buffer_Ring
 
 var window = Buffer<Heap<Int>>.Ring.Bounded(minimumCapacity: 2)
 window.push.back(10)
@@ -46,7 +46,7 @@ A ring is also constructible declaratively with a result builder (`Buffer<Heap<I
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-buffer-ring.git", branch: "main")
 ]
 ```
 
@@ -55,9 +55,9 @@ dependencies: [
     name: "App",
     dependencies: [
         // The umbrella — every variant.
-        .product(name: "Buffer Ring Primitives", package: "swift-buffer-ring-primitives"),
+        .product(name: "Buffer Ring", package: "swift-buffer-ring"),
         // …or depend on a single variant, e.g. just the bounded type:
-        // .product(name: "Buffer Ring Bounded Primitive", package: "swift-buffer-ring-primitives"),
+        // .product(name: "Buffer Ring Bounded Primitive", package: "swift-buffer-ring"),
     ]
 )
 ```
@@ -68,15 +68,15 @@ The package is pre-1.0 — depend on `branch: "main"` until `0.1.0` is tagged.
 
 ## Architecture
 
-Each variant ships as **two modules**: a lean type module (the `~Copyable` value type plus the operations that touch its storage) and an ops/conformances module (the `Copyable`-requiring `Sequence` conformances, kept separate so they never constrain noncopyable use). The `Buffer Ring Primitives` ops module doubles as the umbrella: it re-exports every variant.
+Each variant ships as **two modules**: a lean type module (the `~Copyable` value type plus the operations that touch its storage) and an ops/conformances module (the `Copyable`-requiring `Sequence` conformances, kept separate so they never constrain noncopyable use). The `Buffer Ring` ops module doubles as the umbrella: it re-exports every variant.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Buffer Ring Primitives` | `Sources/Buffer Ring Primitives/` | Umbrella + base ops — re-exports every variant; the `Sequenceable` / `Sequence.Drain` conformances, the scalar iterator, and the `.drain` accessor for `Buffer.Ring`. |
+| `Buffer Ring` | `Sources/Buffer Ring/` | Umbrella + base ops — re-exports every variant; the `Sequenceable` / `Sequence.Drain` conformances, the scalar iterator, and the `.drain` accessor for `Buffer.Ring`. |
 | `Buffer Ring Primitive` | `Sources/Buffer Ring Primitive/` | The lean `Buffer.Ring` type — growable, heap-backed, `~Copyable` — with its push/pop/peek/remove operations, checkpoints, and result builder. |
 | `Buffer Ring Bounded Primitive` | `Sources/Buffer Ring Bounded Primitive/` | The lean `Buffer.Ring.Bounded` type — fixed-capacity, heap-backed, `~Copyable` — whose push returns the rejected element when full. |
-| `Buffer Ring Bounded Primitives` | `Sources/Buffer Ring Bounded Primitives/` | Bounded ops — the `Sequence.Drain` conformance and `.drain` accessor for `Buffer.Ring.Bounded`. |
-| `Buffer Ring Primitives Test Support` | `Tests/Support/` | Re-exports the variant modules for test consumers. |
+| `Buffer Ring Bounded` | `Sources/Buffer Ring Bounded/` | Bounded ops — the `Sequence.Drain` conformance and `.drain` accessor for `Buffer.Ring.Bounded`. |
+| `Buffer Ring Test Support` | `Tests/Support/` | Re-exports the variant modules for test consumers. |
 
 Foundation-free.
 

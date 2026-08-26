@@ -1,7 +1,7 @@
-import Buffer_Ring_Primitives
+import Buffer_Ring
 import Memory_Allocator_Primitive
-import Memory_Small_Primitives
-import Storage_Contiguous_Primitives
+import Memory_Small
+import Storage_Contiguous
 import Testing
 
 @Suite

@@ -1,7 +1,7 @@
-public import Buffer_Ring_Primitives
-import Memory_Heap_Primitives
-public import Storage_Contiguous_Primitives
-import Storage_Protocol_Primitives
+public import Buffer_Ring
+import Memory_Heap
+public import Storage_Contiguous
+import Storage_Protocol
 
 extension Buffer.Ring where S: Store.`Protocol`, S: ~Copyable {
 

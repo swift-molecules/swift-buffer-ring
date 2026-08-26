@@ -1,8 +1,8 @@
-import Affine_Primitives_Standard_Library_Integration
-import Index_Primitives
-public import Memory_Allocator_Protocol_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-public import Store_Ledgered_Primitives
+import Affine_Standard_Library_Integration
+import Index
+public import Memory_Allocator_Protocol
+import Ordinal_Standard_Library_Integration
+public import Store_Ledgered
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

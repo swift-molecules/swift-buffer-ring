@@ -1,7 +1,7 @@
-import Affine_Primitives_Standard_Library_Integration
-import Ordinal_Primitives_Standard_Library_Integration
-public import Span_Protocol_Primitives
-public import Storage_Contiguous_Primitives
+import Affine_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+public import Span_Protocol
+public import Storage_Contiguous
 
 extension Buffer.Ring where S: ~Copyable {
 

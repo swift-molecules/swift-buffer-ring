@@ -1,6 +1,7 @@
-public import Sequence_Primitives
+public import Sequence
+public import Span_Protocol
 
-extension Buffer.Ring.Bounded: Sequence.Drain.`Protocol` where S: ~Copyable {
+extension Buffer.Ring: Sequence.Drain.`Protocol` where S: ~Copyable {
 
     @inlinable
     public mutating func drain(_ body: (consuming S.Element) -> Void) {
@@ -8,7 +9,16 @@ extension Buffer.Ring.Bounded: Sequence.Drain.`Protocol` where S: ~Copyable {
     }
 }
 
-extension Buffer.Ring.Bounded where S: ~Copyable {
+extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
+
+    @inlinable
+    public mutating func removeAll() {
+
+        _drain { _ in }
+    }
+}
+
+extension Buffer.Ring where S: ~Copyable {
 
     @inlinable
     public var drain: Property<Sequence.Drain, Self>.Inout {

@@ -1,7 +1,7 @@
-import Buffer_Ring_Primitives
-import Buffer_Ring_Primitives_Test_Support
-import Memory_Heap_Primitives
-import Storage_Contiguous_Primitives
+import Buffer_Ring
+import Buffer_Ring_Test_Support
+import Memory_Heap
+import Storage_Contiguous
 import Testing
 
 @Suite

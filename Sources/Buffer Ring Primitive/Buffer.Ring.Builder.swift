@@ -1,6 +1,6 @@
-import Affine_Primitives_Standard_Library_Integration
-public import Buffer_Protocol_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
+import Affine_Standard_Library_Integration
+public import Buffer_Protocol
+import Ordinal_Standard_Library_Integration
 
 extension Buffer.Ring where S: ~Copyable {
 

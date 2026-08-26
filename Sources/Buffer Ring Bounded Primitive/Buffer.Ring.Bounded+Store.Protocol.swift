@@ -1,10 +1,10 @@
-import Affine_Primitives_Standard_Library_Integration
-import Cyclic_Index_Primitives
-public import Index_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-import Store_Initialization_Primitives
-public import Store_Ledgered_Primitives
-public import Store_Protocol_Primitives
+import Affine_Standard_Library_Integration
+import Cyclic_Index
+public import Index
+import Ordinal_Standard_Library_Integration
+import Store_Initialization
+public import Store_Ledgered
+public import Store_Protocol
 
 extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~Copyable {
 

@@ -1,5 +1,5 @@
-public import Sequence_Primitives
-public import Span_Protocol_Primitives
+public import Sequence
+public import Span_Protocol
 
 extension Buffer.Ring: Sequenceable where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 

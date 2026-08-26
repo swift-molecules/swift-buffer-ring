@@ -1,10 +1,10 @@
-import Buffer_Primitives_Test_Support
-import Buffer_Ring_Primitives
-import Buffer_Ring_Primitives_Test_Support
-import Index_Primitives
+import Buffer_Test_Support
+import Buffer_Ring
+import Buffer_Ring_Test_Support
+import Index
 import Memory_Allocator_Primitive
-import Memory_Heap_Primitives
-import Storage_Contiguous_Primitives
+import Memory_Heap
+import Storage_Contiguous
 import Testing
 
 private typealias HeapStorage<E: ~Copyable> =

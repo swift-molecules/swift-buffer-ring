@@ -1,8 +1,8 @@
-import Affine_Primitives_Standard_Library_Integration
+import Affine_Standard_Library_Integration
 public import Iterable
-import Ordinal_Primitives_Standard_Library_Integration
-public import Span_Protocol_Primitives
-public import Store_Protocol_Primitives
+import Ordinal_Standard_Library_Integration
+public import Span_Protocol
+public import Store_Protocol
 
 extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
