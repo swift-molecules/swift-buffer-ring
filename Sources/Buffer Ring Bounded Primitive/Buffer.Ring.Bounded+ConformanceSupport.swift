@@ -1,7 +1,6 @@
 import Affine_Standard_Library_Integration
 import Ordinal_Standard_Library_Integration
-public import Span_Protocol
-public import Storage_Contiguous
+public import Span
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
@@ -18,7 +17,7 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
         while !header.isEmpty {
             let element = storage.move(at: header.head)
             header.head = Index.Modular.successor(of: header.head, capacity: header.capacity)
-            header.count = header.count.subtract.saturating(.one)
+            header.count = header.count.subtracting(saturating: .one)
             body(element)
         }
         header.head = .zero

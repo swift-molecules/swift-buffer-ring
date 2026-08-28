@@ -1,6 +1,6 @@
 import Affine_Standard_Library_Integration
 import Ordinal_Standard_Library_Integration
-public import Store_Ledgered
+public import Storage
 
 extension Buffer.Ring where S: ~Copyable {
 

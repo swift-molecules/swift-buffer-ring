@@ -1,5 +1,5 @@
 public import Sequence
-public import Span_Protocol
+public import Span
 
 extension Buffer.Ring: Sequence.Drain.`Protocol` where S: ~Copyable {
 
@@ -15,19 +15,5 @@ extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyabl
     public mutating func removeAll() {
 
         _drain { _ in }
-    }
-}
-
-extension Buffer.Ring where S: ~Copyable {
-
-    @inlinable
-    public var drain: Property<Sequence.Drain, Self>.Inout {
-        mutating _read {
-            yield Property<Sequence.Drain, Self>.Inout(&self)
-        }
-        mutating _modify {
-            var accessor = Property<Sequence.Drain, Self>.Inout(&self)
-            yield &accessor
-        }
     }
 }

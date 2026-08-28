@@ -1,3 +1,5 @@
+public import Tagged
+public import Cardinal
 import Affine_Standard_Library_Integration
 import Index
 import Ordinal_Standard_Library_Integration
@@ -9,10 +11,10 @@ extension Buffer.Ring where S: ~Copyable {
         package let head: Index<S.Element>
 
         @usableFromInline
-        package let count: Index<S.Element>.Count
+        package let count: Tagged<S.Element, Cardinal>
 
         @inlinable
-        package init(head: Index<S.Element>, count: Index<S.Element>.Count) {
+        package init(head: Index<S.Element>, count: Tagged<S.Element, Cardinal>) {
             self.head = head
             self.count = count
         }

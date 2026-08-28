@@ -1,3 +1,12 @@
+public import Memory
+public import Memory_Allocator_Primitive
+public import Memory_Small
+public import Ownership
+public import Property
+public import Property_Ownership
+public import Storage
+public import Storage_Memory
+
 extension Buffer.Ring where S: ~Copyable {
 
     public enum Remove {}
@@ -10,8 +19,8 @@ extension Buffer.Ring.Remove where S: ~Copyable {
 
 extension Property.Inout.Typed
 where
-    Tag == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Ring.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Ring,
+    Tag == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Ring.Remove,
+    Base == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Ring,
     Element: ~Copyable
 {
 

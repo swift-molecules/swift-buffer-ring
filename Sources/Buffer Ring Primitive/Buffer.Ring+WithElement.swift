@@ -1,6 +1,8 @@
+public import Affine_Tagged
 import Affine_Standard_Library_Integration
+public import Cyclic_Index
 import Ordinal_Standard_Library_Integration
-public import Store_Protocol
+public import Storage
 
 extension Buffer.Ring where S: ~Copyable {
 
@@ -16,7 +18,7 @@ extension Buffer.Ring where S: ~Copyable {
                 Index.Modular.advanced(
                     header.head,
                     by: Index<S.Element>.Offset(
-                        fromZero: header.count.subtract.saturating(.one).map(Ordinal.init)
+                        header.count.subtracting(saturating: .one)
                     ),
                     capacity: header.capacity
                 )

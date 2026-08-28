@@ -1,12 +1,22 @@
+public import Tagged
+public import Cardinal
+public import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
-public import Iterable
+public import Iterator
 import Ordinal_Standard_Library_Integration
-public import Span_Protocol
-public import Store_Protocol
+public import Span
+public import Storage
 
 extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
-    public struct Scalar: Iterator_Primitive.Iterator.`Protocol`, ~Copyable {
+    public struct Scalar: Iterating<S.Element, Never>, ~Copyable {
+        @_implements(Iterating,Element)
+        public typealias ScalarElement = S.Element
+
+        @_implements(Iterating,Failure)
+        public typealias ScalarFailure = Never
+
         @usableFromInline
         var base: Buffer<S>.Ring
 
@@ -23,13 +33,11 @@ extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyabl
 
 extension Buffer.Ring.Scalar where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
-    public typealias Failure = Never
-
     @inlinable
     public mutating func next() -> S.Element? {
-        let end = base.count.map(Ordinal.init)
+        let end = base.count.map { Ordinal($0.rawValue) }
         guard position < end else { return nil }
-        defer { position += .one }
+        defer { position = position.advanced(by: .one) }
         let physical = Buffer.Ring.physicalSlot(forLogical: position, header: base._header)
 
         return base._storage[physical]

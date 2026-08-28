@@ -1,6 +1,6 @@
-import Affine_Standard_Library_Integration
+public import Tagged
+public import Cardinal
 import Index
-import Ordinal_Standard_Library_Integration
 
 extension Buffer.Ring.Header where S: ~Copyable {
 
@@ -9,12 +9,12 @@ extension Buffer.Ring.Header where S: ~Copyable {
 
         public var head: Index<S.Element>.Cyclic<capacity>
 
-        public var count: Index<S.Element>.Count
+        public var count: Tagged<S.Element, Cardinal>
 
         @inlinable
         public init() {
 
-            self.head = Index<S.Element>.Cyclic<capacity>(__unchecked: Ordinal(0))
+            self.head = Index<S.Element>.Cyclic<capacity>(__unchecked: Int.zero)
             self.count = .zero
         }
     }
@@ -29,8 +29,8 @@ extension Buffer.Ring.Header.Cyclic where S: ~Copyable {
     public var isFull: Bool { count == Self.slotCapacity }
 
     @inlinable
-    public static var slotCapacity: Index<S.Element>.Count {
-        Index<S.Element>.Count(UInt(capacity))
+    public static var slotCapacity: Tagged<S.Element, Cardinal> {
+        Tagged<S.Element, Cardinal>(UInt(capacity))
     }
 }
 

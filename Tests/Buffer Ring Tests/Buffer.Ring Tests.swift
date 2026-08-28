@@ -1,8 +1,13 @@
+import Tagged
+import Cardinal
+import Cardinal_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+import Tagged_Standard_Library_Integration
+import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
-import Memory_Heap
-import Sequence_Hint
-import Storage_Contiguous
+import Memory
+import Storage_Memory
 import Testing
 
 @Suite
@@ -16,14 +21,14 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `FIFO ordering`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         buffer.push.back(10)
         buffer.push.back(20)
         buffer.push.back(30)
 
-        #expect(buffer.count == 3)
+        #expect(buffer.count.underlying.rawValue == 3)
 
         #expect(buffer.pop.front() == 10)
         #expect(buffer.pop.front() == 20)
@@ -34,7 +39,7 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `wrap-around behavior`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
 
@@ -58,7 +63,7 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `growth doubles capacity`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 2
         )
         let originalCap = buffer.capacity
@@ -81,7 +86,7 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `slotCapacity invariant — capacity from storage, not request`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 3
         )
 
@@ -90,7 +95,7 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `drain removes all elements in FIFO order`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         var drained: [Int] = []
@@ -102,25 +107,25 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `removeAll clears buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([1, 2, 3])
         buffer.remove.all()
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
-        #expect(buffer.count == 0)
+        #expect(buffer.count.underlying.rawValue == 0)
     }
 
     @Test
     func `reserveCapacity grows if needed`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 2
         )
-        buffer.reserveCapacity(Index<Int>.Count(Cardinal(100)))
+        buffer.reserveCapacity(.init(_unchecked: Cardinal(UInt(100))))
         #expect(buffer.capacity.underlying.rawValue >= 100)
     }
 
     @Test
     func `peekFront and peekBack (Copyable)`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
 
@@ -132,7 +137,7 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `pushFront and popBack (deque behavior)`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         buffer.push.front(10)
@@ -143,8 +148,8 @@ extension `Buffer.Ring Tests`.Unit {
     }
 
     @Test
-    func `Iterable iteration (Copyable)`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+    func `Iterator iteration (Copyable)`() {
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
 
@@ -155,11 +160,11 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `single element`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 1
         )
         buffer.push.back(42)
-        #expect(buffer.count == 1)
+        #expect(buffer.count.underlying.rawValue == 1)
         #expect(buffer.pop.front() == 42)
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
@@ -167,27 +172,27 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `withFront borrows first element`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         let value = buffer.withFront { $0 }
         #expect(value == 10)
-        #expect(buffer.count == 3)
+        #expect(buffer.count.underlying.rawValue == 3)
     }
 
     @Test
     func `withBack borrows last element`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         let value = buffer.withBack { $0 }
         #expect(value == 30)
-        #expect(buffer.count == 3)
+        #expect(buffer.count.underlying.rawValue == 3)
     }
 
     @Test
     func `forEach visits all elements in FIFO order`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         var visited: [Int] = []
@@ -197,16 +202,16 @@ extension `Buffer.Ring Tests`.Unit {
 
     @Test
     func `checkpoint saves current position`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         let cp = buffer.checkpoint
-        #expect(cp.count == 3)
+        #expect(cp.count.underlying.rawValue == 3)
     }
 
     @Test
     func `compact reclaims unused capacity`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 100
         )
         buffer.push.back(1)
@@ -218,12 +223,11 @@ extension `Buffer.Ring Tests`.Unit {
     }
 
     @Test
-    func `hint count default`() {
-
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+    func `array initialization records the logical count`() {
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
-        #expect(buffer.hint.count == .zero)
+        #expect(buffer.count.underlying.rawValue == 3)
     }
 }
 
@@ -231,19 +235,19 @@ extension `Buffer.Ring Tests`.EdgeCase {
 
     @Test
     func `empty buffer operations`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
-        #expect(buffer.count == 0)
+        #expect(buffer.count.underlying.rawValue == 0)
         let bufferIsFull = buffer.isFull
         #expect(!bufferIsFull)
     }
 
     @Test
     func `pushBack on empty then popFront`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         buffer.push.back(42)
@@ -254,16 +258,16 @@ extension `Buffer.Ring Tests`.EdgeCase {
 
     @Test
     func `checkpoint on empty buffer`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         let cp = buffer.checkpoint
-        #expect(cp.count == 0)
+        #expect(cp.count.underlying.rawValue == 0)
     }
 
     @Test
     func `reserveCapacity with zero is no-op`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         let originalCap = buffer.capacity
@@ -273,12 +277,12 @@ extension `Buffer.Ring Tests`.EdgeCase {
 
     @Test
     func `compact on already-compact buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             1, 2, 3, 4,
         ])
         buffer.compact()
 
-        #expect(buffer.count == 4)
+        #expect(buffer.count.underlying.rawValue == 4)
         #expect(buffer.pop.front() == 1)
     }
 }
@@ -287,7 +291,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `interleaved push/pop maintains order`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 4
         )
         buffer.push.back(1)
@@ -302,7 +306,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `checkpoint restore skips intermediate elements`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 8
         )
         buffer.push.back(10)
@@ -312,7 +316,7 @@ extension `Buffer.Ring Tests`.Integration {
         buffer.push.back(40)
 
         buffer.restore(to: cp)
-        #expect(buffer.count == 2)
+        #expect(buffer.count.underlying.rawValue == 2)
         #expect(buffer.pop.front() == 10)
         #expect(buffer.pop.front() == 20)
         let bufferIsEmpty = buffer.isEmpty
@@ -321,7 +325,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `drain then reuse buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([
             10, 20, 30,
         ])
         buffer.drain { _ in }
@@ -336,7 +340,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `multipass re-iterate`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring([1, 2, 3])
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring([1, 2, 3])
 
         var first: [Int] = []
         buffer.forEach { first.append($0) }
@@ -349,7 +353,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `consuming scalar over wrapped ring is FIFO`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 8
         )
         for i in 0..<8 { buffer.push.back(i) }
@@ -363,7 +367,7 @@ extension `Buffer.Ring Tests`.Integration {
 
     @Test
     func `consuming scalar with head offset, no wrap, is FIFO`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring(
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 8
         )
         for i in 0..<4 { buffer.push.back(i) }

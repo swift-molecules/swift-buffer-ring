@@ -7,17 +7,3 @@ extension Buffer.Ring.Bounded: Sequence.Drain.`Protocol` where S: ~Copyable {
         _drain(body)
     }
 }
-
-extension Buffer.Ring.Bounded where S: ~Copyable {
-
-    @inlinable
-    public var drain: Property<Sequence.Drain, Self>.Inout {
-        mutating _read {
-            yield Property<Sequence.Drain, Self>.Inout(&self)
-        }
-        mutating _modify {
-            var accessor = Property<Sequence.Drain, Self>.Inout(&self)
-            yield &accessor
-        }
-    }
-}

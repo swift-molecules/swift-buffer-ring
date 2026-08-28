@@ -13,12 +13,13 @@ A ring buffer keeps its elements in a fixed physical window and wraps the head a
 ```swift
 import Buffer_Ring
 
-// These ring buffers pin to heap-backed contiguous storage; alias the spelling once.
-typealias Heap<Element> = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>
+// The canonical growable representation uses Memory.Small<0>-backed contiguous storage.
+typealias RingStorage<Element> =
+    Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>
 
 // A growable, double-ended FIFO. Both ends are O(1): the head and tail wrap around
 // a fixed physical window, so neither push nor pop shifts the other elements.
-var ring = Buffer<Heap<Int>>.Ring(minimumCapacity: 4)
+var ring = Buffer<RingStorage<Int>>.Ring(minimumCapacity: 4)
 ring.push.back(1)
 ring.push.back(2)
 ring.push.front(0)              // prepend in O(1)
@@ -31,14 +32,14 @@ let tail = ring.pop.back()      // 2 — remove from the back
 ```swift
 import Buffer_Ring
 
-var window = Buffer<Heap<Int>>.Ring.Bounded(minimumCapacity: 2)
+var window = Buffer<RingStorage<Int>>.Ring.Bounded(minimumCapacity: 2)
 window.push.back(10)
 window.push.back(20)
 let rejected = window.push.back(30)   // Optional(30): the ceiling is reached
 precondition(window.isFull && rejected == 30)
 ```
 
-A ring is also constructible declaratively with a result builder (`Buffer<Heap<Int>>.Ring { 1; 2; 3 }`, where declaration order is the FIFO read order), and drains front-to-back through `drain(_:)` / `removeAll()`. When its element is `Copyable` it conforms to `Sequenceable` for single-pass iteration.
+A ring is also constructible declaratively with a result builder (`Buffer<RingStorage<Int>>.Ring { 1; 2; 3 }`, where declaration order is the FIFO read order), and drains front-to-back through `drain(_:)` / `removeAll()`. When its element is `Copyable` it conforms to `Sequenceable` for single-pass iteration.
 
 ---
 
@@ -72,10 +73,10 @@ Each variant ships as **two modules**: a lean type module (the `~Copyable` value
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Buffer Ring` | `Sources/Buffer Ring/` | Umbrella + base ops — re-exports every variant; the `Sequenceable` / `Sequence.Drain` conformances, the scalar iterator, and the `.drain` accessor for `Buffer.Ring`. |
-| `Buffer Ring Primitive` | `Sources/Buffer Ring Primitive/` | The lean `Buffer.Ring` type — growable, heap-backed, `~Copyable` — with its push/pop/peek/remove operations, checkpoints, and result builder. |
-| `Buffer Ring Bounded Primitive` | `Sources/Buffer Ring Bounded Primitive/` | The lean `Buffer.Ring.Bounded` type — fixed-capacity, heap-backed, `~Copyable` — whose push returns the rejected element when full. |
-| `Buffer Ring Bounded` | `Sources/Buffer Ring Bounded/` | Bounded ops — the `Sequence.Drain` conformance and `.drain` accessor for `Buffer.Ring.Bounded`. |
+| `Buffer Ring` | `Sources/Buffer Ring/` | Umbrella + base ops — re-exports every variant; the `Sequenceable` / `Sequence.Drain` conformances and scalar iterator for `Buffer.Ring`. |
+| `Buffer Ring Primitive` | `Sources/Buffer Ring Primitive/` | The lean `Buffer.Ring` type — growable, `Memory.Small<0>`-backed, `~Copyable` — with its push/pop/peek/remove operations, checkpoints, and result builder. |
+| `Buffer Ring Bounded Primitive` | `Sources/Buffer Ring Bounded Primitive/` | The lean `Buffer.Ring.Bounded` type — fixed-capacity, `Memory.Small<0>`-backed, `~Copyable` — whose push returns the rejected element when full. |
+| `Buffer Ring Bounded` | `Sources/Buffer Ring Bounded/` | Bounded ops — the direct `Sequence.Drain` conformance for `Buffer.Ring.Bounded`. |
 | `Buffer Ring Test Support` | `Tests/Support/` | Re-exports the variant modules for test consumers. |
 
 Foundation-free.

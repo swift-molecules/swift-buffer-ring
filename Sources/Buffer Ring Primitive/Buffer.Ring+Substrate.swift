@@ -1,4 +1,4 @@
-import Storage_Protocol
+import Storage
 
 extension Buffer.Ring where S: ~Copyable {
 

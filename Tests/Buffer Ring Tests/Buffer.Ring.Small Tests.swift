@@ -1,7 +1,12 @@
+import Tagged
+import Cardinal
+import Cardinal_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+import Tagged_Standard_Library_Integration
 import Buffer_Ring
 import Memory_Allocator_Primitive
 import Memory_Small
-import Storage_Contiguous
+import Storage_Memory
 import Testing
 
 @Suite
@@ -20,7 +25,7 @@ extension `Buffer.Ring.Small Tests` {
         for value in 1...16 {
             ring.pushBack(value)
         }
-        #expect(ring.count == 16)
+        #expect(ring.count.underlying.rawValue == 16)
 
         var expected = 1
         while ring.count > .zero {
@@ -37,7 +42,7 @@ extension `Buffer.Ring.Small Tests` {
         ring.pushBack(100)
         ring.pushBack(200)
         ring.pushBack(300)
-        #expect(ring.count == 3)
+        #expect(ring.count.underlying.rawValue == 3)
 
         var seen: [Int] = []
         ring.drain { seen.append($0) }
@@ -47,13 +52,13 @@ extension `Buffer.Ring.Small Tests` {
 
     @Test
     func `static seam ops (form-1) over a Memory.Small<64> substrate`() {
-        let capacity: Index<Int>.Count = 8
+        let capacity: Tagged<Int, Cardinal> = 8
         var header = Buffer<SmallColumn>.Ring.Header(capacity: capacity)
         var storage = SmallColumn.create(minimumCapacity: capacity)
 
         Buffer<SmallColumn>.Ring.pushBack(1, header: &header, storage: &storage)
         Buffer<SmallColumn>.Ring.pushBack(2, header: &header, storage: &storage)
-        #expect(header.count == 2)
+        #expect(header.count.underlying.rawValue == 2)
 
         let first = Buffer<SmallColumn>.Ring.popFront(header: &header, storage: &storage)
         #expect(first == 1)

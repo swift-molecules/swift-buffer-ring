@@ -1,8 +1,10 @@
+public import Affine_Tagged
 import Affine_Standard_Library_Integration
+public import Cardinal
+public import Cyclic_Index
 import Ordinal_Standard_Library_Integration
-public import Storage_Protocol
-public import Store_Ledgered
-public import Store_Protocol
+public import Storage
+public import Tagged
 
 extension Buffer.Ring where S: ~Copyable {
 
@@ -12,12 +14,12 @@ extension Buffer.Ring where S: ~Copyable {
         header: inout Header,
         storage: inout S
     ) where S: Store.Ledgered.`Protocol` {
-        let countOffset = Index<S.Element>.Offset(fromZero: header.count.map(Ordinal.init))
+        let countOffset = Index<S.Element>.Offset(header.count)
         let tail = Index.Modular.advanced(header.head, by: countOffset, capacity: header.capacity)
 
         storage.initialize(at: tail, to: consume element)
 
-        header.count = header.count.add.saturating(.one)
+        header.count = header.count.adding(saturating: .one)
 
         storage.initialization = header.initialization
     }
@@ -31,7 +33,7 @@ extension Buffer.Ring where S: ~Copyable {
 
         header.head = Index.Modular.successor(of: header.head, capacity: header.capacity)
 
-        header.count = header.count.subtract.saturating(.one)
+        header.count = header.count.subtracting(saturating: .one)
 
         storage.initialization = header.initialization
 
@@ -48,7 +50,7 @@ extension Buffer.Ring where S: ~Copyable {
 
         storage.initialize(at: header.head, to: consume element)
 
-        header.count = header.count.add.saturating(.one)
+        header.count = header.count.adding(saturating: .one)
 
         storage.initialization = header.initialization
     }
@@ -58,8 +60,8 @@ extension Buffer.Ring where S: ~Copyable {
         header: inout Header,
         storage: inout S
     ) -> S.Element where S: Store.Ledgered.`Protocol` {
-        let newCount = header.count.subtract.saturating(.one)
-        let lastOffset = Index<S.Element>.Offset(fromZero: newCount.map(Ordinal.init))
+        let newCount = header.count.subtracting(saturating: .one)
+        let lastOffset = Index<S.Element>.Offset(newCount)
         let lastSlot = Index.Modular.advanced(
             header.head,
             by: lastOffset,

@@ -1,14 +1,17 @@
+public import Tagged
+public import Cardinal
 import Affine_Standard_Library_Integration
 import Index
 public import Memory_Allocator_Protocol
 import Ordinal_Standard_Library_Integration
-public import Store_Ledgered
+public import Property_Ownership
+public import Storage
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
-        minimumCapacity: Index<Element>.Count
+        minimumCapacity: Tagged<Element, Cardinal>
     ) where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         let storage = S.create(minimumCapacity: minimumCapacity)
         self.init(
@@ -18,10 +21,13 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     }
 
     @inlinable
-    public var count: Index<S.Element>.Count { header.count }
+    public var count: Tagged<S.Element, Cardinal> { header.count }
 
     @inlinable
-    public var capacity: Index<S.Element>.Count { header.capacity }
+    public var capacity: Tagged<S.Element, Cardinal> { header.capacity }
+
+    @inlinable
+    public var isEmpty: Bool { header.isEmpty }
 
     @inlinable
     public var isFull: Bool { header.isFull }

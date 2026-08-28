@@ -1,7 +1,13 @@
+import Tagged
+import Cardinal
+import Cardinal_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+import Tagged_Standard_Library_Integration
+import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
-import Memory_Heap
-import Storage_Contiguous
+import Memory
+import Storage_Memory
 import Testing
 
 @Suite
@@ -14,19 +20,19 @@ extension `Buffer.Ring.Header Tests`.Unit {
 
     @Test
     func `init sets head to zero, count to zero`() {
-        let cap: Index<Int>.Count = 8
-        let header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        let cap: Tagged<Int, Cardinal> = 8
+        let header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: cap
         )
         #expect(header.head == 0)
-        #expect(header.count == 0)
+        #expect(header.count.underlying.rawValue == 0)
         #expect(header.capacity == cap)
     }
 
     @Test
     func `isEmpty and isFull`() {
-        let cap: Index<Int>.Count = 4
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        let cap: Tagged<Int, Cardinal> = 4
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: cap
         )
         let headerIsEmpty = header.isEmpty
@@ -43,7 +49,7 @@ extension `Buffer.Ring.Header Tests`.Unit {
 
     @Test
     func `initialization returns .empty when count is zero`() {
-        let header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        let header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 4
         )
         switch header.initialization {
@@ -51,13 +57,13 @@ extension `Buffer.Ring.Header Tests`.Unit {
             break
 
         default:
-            Issue.record("Expected .empty, got \(header.initialization)")
+            Issue.record("Expected .empty initialization")
         }
     }
 
     @Test
     func `initialization returns .one for non-wrapping elements`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 8
         )
         header.count = 3
@@ -68,13 +74,13 @@ extension `Buffer.Ring.Header Tests`.Unit {
             #expect(range.upperBound == 3)
 
         default:
-            Issue.record("Expected .one, got \(header.initialization)")
+            Issue.record("Expected .one initialization")
         }
     }
 
     @Test
     func `initialization returns .two for wrapping elements`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 4
         )
         header.head = 3
@@ -88,13 +94,13 @@ extension `Buffer.Ring.Header Tests`.Unit {
             #expect(second.upperBound == 2)
 
         default:
-            Issue.record("Expected .two, got \(header.initialization)")
+            Issue.record("Expected .two initialization")
         }
     }
 
     @Test
     func `Copyable`() {
-        let a = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        let a = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 4
         )
         let b = a
@@ -108,7 +114,7 @@ extension `Buffer.Ring.Header Tests`.EdgeCase {
 
     @Test
     func `cyclic head wraps at capacity`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 4
         )
         header.head = 3
@@ -126,7 +132,7 @@ extension `Buffer.Ring.Header Tests`.EdgeCase {
 
     @Test
     func `full capacity produces .one or .two depending on head`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Ring.Header(
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Header(
             capacity: 4
         )
         header.count = 4

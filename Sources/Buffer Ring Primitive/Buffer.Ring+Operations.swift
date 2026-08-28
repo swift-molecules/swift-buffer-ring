@@ -1,17 +1,19 @@
+public import Tagged
+public import Cardinal
 import Affine_Standard_Library_Integration
 import Index
 public import Memory_Allocator_Primitive
 public import Memory_Allocator_Protocol
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
-public import Storage_Primitive
-public import Store_Ledgered
+public import Property_Ownership
+public import Storage_Memory
+public import Storage
 
 extension Buffer.Ring where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
-        minimumCapacity: Index<Element>.Count
+        minimumCapacity: Tagged<Element, Cardinal>
     )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         let storage = S.create(minimumCapacity: minimumCapacity)
@@ -24,21 +26,24 @@ extension Buffer.Ring where S: ~Copyable {
     @inlinable
     public init<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>()
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
-        self.init(minimumCapacity: Index<Element>.Count.zero)
+        self.init(minimumCapacity: Tagged<Element, Cardinal>.zero)
     }
 
     @inlinable
-    public var count: Index<S.Element>.Count { header.count }
+    public var count: Tagged<S.Element, Cardinal> { header.count }
 
     @inlinable
-    public var capacity: Index<S.Element>.Count { header.capacity }
+    public var capacity: Tagged<S.Element, Cardinal> { header.capacity }
+
+    @inlinable
+    public var isEmpty: Bool { header.isEmpty }
 
     @inlinable
     public var isFull: Bool { header.isFull }
 
     @inlinable
     public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
-        _ minimumCapacity: Index<Element>.Count
+        _ minimumCapacity: Tagged<Element, Cardinal>
     )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if minimumCapacity > header.capacity {
@@ -52,13 +57,13 @@ extension Buffer.Ring where S: ~Copyable {
         if header.capacity == .zero {
             _growTo(.one)
         } else {
-            _growTo(header.capacity * 2)
+            _growTo(header.capacity.adding(saturating: header.capacity))
         }
     }
 
     @inlinable
     package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
-        _ minimumCapacity: Index<Element>.Count
+        _ minimumCapacity: Tagged<Element, Cardinal>
     )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var newStorage = S.create(minimumCapacity: minimumCapacity)

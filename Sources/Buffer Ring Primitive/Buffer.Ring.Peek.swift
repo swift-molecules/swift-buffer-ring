@@ -1,3 +1,6 @@
+public import Property
+public import Property_Ownership
+
 extension Buffer.Ring where S: ~Copyable {
 
     public enum Peek {}

@@ -1,3 +1,5 @@
+public import Tagged
+public import Cardinal
 import Affine_Standard_Library_Integration
 import Index
 import Ordinal_Standard_Library_Integration
@@ -9,12 +11,12 @@ extension Buffer.Ring where S: ~Copyable {
 
         public var head: Index<S.Element>
 
-        public var count: Index<S.Element>.Count
+        public var count: Tagged<S.Element, Cardinal>
 
-        public let capacity: Index<S.Element>.Count
+        public let capacity: Tagged<S.Element, Cardinal>
 
         @inlinable
-        public init(capacity: Index<S.Element>.Count) {
+        public init(capacity: Tagged<S.Element, Cardinal>) {
             self.head = .zero
             self.count = .zero
             self.capacity = capacity
