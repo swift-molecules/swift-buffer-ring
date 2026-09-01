@@ -60,15 +60,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-affine-tagged.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-ordinal-comparison.git",
             branch: "main"
         ),
         .package(
@@ -133,13 +125,13 @@ let package = Package(
                     name: "Affine Standard Library Integration",
                     package: "swift-affine"
                 ),
-                .product(name: "Affine Tagged", package: "swift-affine-tagged"),
+                .product(name: "Affine Tagged", package: "swift-affine"),
                 .product(
                     name: "Ordinal Standard Library Integration",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal-comparison"),
+                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -171,13 +163,13 @@ let package = Package(
                     name: "Affine Standard Library Integration",
                     package: "swift-affine"
                 ),
-                .product(name: "Affine Tagged", package: "swift-affine-tagged"),
+                .product(name: "Affine Tagged", package: "swift-affine"),
                 .product(
                     name: "Ordinal Standard Library Integration",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal-comparison"),
+                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -206,7 +198,7 @@ let package = Package(
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal-comparison"),
+                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
