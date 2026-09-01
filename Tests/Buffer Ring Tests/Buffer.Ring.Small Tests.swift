@@ -4,7 +4,7 @@ import Cardinal_Standard_Library_Integration
 import Ordinal_Standard_Library_Integration
 import Tagged_Standard_Library_Integration
 import Buffer_Ring
-import Memory_Allocator_Primitive
+import Memory_Allocator
 import Memory_Small
 import Storage_Memory
 import Testing

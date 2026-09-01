@@ -2,7 +2,7 @@ public import Affine_Tagged
 import Affine_Standard_Library_Integration
 public import Cyclic_Index
 public import Index
-public import Memory_Allocator_Primitive
+public import Memory_Allocator
 public import Memory
 public import Memory_Small
 public import Ownership

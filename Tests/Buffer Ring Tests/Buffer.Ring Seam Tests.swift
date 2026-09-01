@@ -7,7 +7,7 @@ import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
 import Index
-import Memory_Allocator_Primitive
+import Memory_Allocator
 import Memory
 import Ordinal
 import Storage_Memory

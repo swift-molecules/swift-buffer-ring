@@ -2,7 +2,7 @@ public import Tagged
 public import Cardinal
 import Affine_Standard_Library_Integration
 import Index
-public import Memory_Allocator_Primitive
+public import Memory_Allocator
 public import Memory_Allocator_Protocol
 import Ordinal_Standard_Library_Integration
 public import Property_Ownership

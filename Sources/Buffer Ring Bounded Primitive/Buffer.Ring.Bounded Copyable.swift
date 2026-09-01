@@ -3,7 +3,7 @@ import Affine_Standard_Library_Integration
 public import Cardinal
 public import Cyclic_Index
 public import Index
-public import Memory_Allocator_Primitive
+public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Memory
 public import Memory_Small
