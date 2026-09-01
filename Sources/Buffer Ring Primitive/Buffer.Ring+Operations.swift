@@ -1,10 +1,27 @@
+public import Sequence_Protocol
+public import Iterator_Chunk
+public import Iterable
+public import Store_Ledgered
+public import Store_Initialization
+public import Store_Operations
+public import Store_Protocol
+public import Store
+public import Span_Protocol
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Ordinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Tagged
 public import Cardinal
-import Affine_Standard_Library_Integration
-import Index
+public import Affine_Standard_Library_Integration
+public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
-import Ordinal_Standard_Library_Integration
+public import Ordinal_Standard_Library_Integration
 public import Property_Ownership
 public import Storage_Memory
 public import Storage
@@ -57,7 +74,7 @@ extension Buffer.Ring where S: ~Copyable {
         if header.capacity == .zero {
             _growTo(.one)
         } else {
-            _growTo(header.capacity.adding(saturating: header.capacity))
+            _growTo(header.capacity.add.saturating(header.capacity))
         }
     }
 

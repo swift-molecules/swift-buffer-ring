@@ -1,3 +1,20 @@
+public import Cyclic_Group_Static_Element
+public import Sequence_Protocol
+public import Iterator_Chunk
+public import Iterable
+public import Store_Ledgered
+public import Store_Initialization
+public import Store_Operations
+public import Store_Protocol
+public import Store
+public import Span_Protocol
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Cardinal
 public import Index
 public import Ordinal
@@ -15,21 +32,17 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
             return
         }
 
-        let tail = header.head.advanced(by: header.count)
-        let capacity = Index<Element>(header.capacity)
+        let tail = header.head + header.count
+        let capacity = Index<Element>(_unchecked: Ordinal(header.capacity.underlying))
 
         if tail <= capacity {
-            self = .one(Store.Span(start: header.head, count: header.count))
+            self = .one((header.head)..<((header.head) + header.count))
         } else {
-            let firstCount = header.capacity.subtracting(
-                saturating: Tagged<Element, Cardinal>(header.head)
+            let firstCount = header.capacity.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(header.head.ordinal))
             )
             self = .two(
-                first: Store.Span(start: header.head, count: firstCount),
-                second: Store.Span(
-                    start: .zero,
-                    count: header.count.subtracting(saturating: firstCount)
-                )
+                first: (header.head)..<((header.head) + firstCount),
+                second: Index<Element>(_unchecked: .zero)..<(Index<Element>(_unchecked: .zero) + header.count.subtract.saturating(firstCount))
             )
         }
     }
@@ -48,20 +61,16 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
 
         let slotCapacity = Buffer<S>.Ring.Header.Cyclic<capacity>.slotCapacity
         let headIndex = header.head.map { $0.position }
-        let tail = headIndex.advanced(by: header.count)
+        let tail = (headIndex + header.count)
 
-        if tail <= Index<Element>(slotCapacity) {
-            self = .one(Store.Span(start: headIndex, count: header.count))
+        if tail <= Index<Element>(_unchecked: Ordinal(slotCapacity.underlying)) {
+            self = .one((headIndex)..<((headIndex) + header.count))
         } else {
-            let firstCount = slotCapacity.subtracting(
-                saturating: Tagged<Element, Cardinal>(headIndex)
+            let firstCount = slotCapacity.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(headIndex.ordinal))
             )
             self = .two(
-                first: Store.Span(start: headIndex, count: firstCount),
-                second: Store.Span(
-                    start: .zero,
-                    count: header.count.subtracting(saturating: firstCount)
-                )
+                first: (headIndex)..<((headIndex) + firstCount),
+                second: Index<Element>(_unchecked: .zero)..<(Index<Element>(_unchecked: .zero) + header.count.subtract.saturating(firstCount))
             )
         }
     }

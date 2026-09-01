@@ -1,10 +1,26 @@
+public import Sequence_Protocol
+public import Iterator_Chunk
+public import Iterable
+public import Store_Ledgered
+public import Store_Initialization
+public import Store_Operations
+public import Store_Protocol
+public import Store
+public import Span_Protocol
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Affine_Tagged
-import Affine_Standard_Library_Integration
+public import Affine_Standard_Library_Integration
 public import Cardinal
 public import Cyclic_Index
 public import Index
 public import Ordinal
-import Ordinal_Standard_Library_Integration
+public import Ordinal_Standard_Library_Integration
 public import Storage
 public import Tagged
 
@@ -45,7 +61,7 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
             capacity: header.capacity
         )
         storage.initialize(at: tail, to: element)
-        header.count = header.count.adding(saturating: .one)
+        header.count = header.count.add.saturating(.one)
         storage.initialization = .init(header)
     }
 
@@ -55,11 +71,11 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
         if slot == .zero {
             let element = storage.move(at: header.head)
             header.head = Index.Modular.successor(of: header.head, capacity: header.capacity)
-            header.count = header.count.subtracting(saturating: .one)
+            header.count = header.count.subtract.saturating(.one)
             storage.initialization = .init(header)
             return element
         }
-        let newCount = header.count.subtracting(saturating: .one)
+        let newCount = header.count.subtract.saturating(.one)
         precondition(
             slot == newCount.map { Ordinal($0.rawValue) },
             "ring seam: move is lawful only at the front or the back"
