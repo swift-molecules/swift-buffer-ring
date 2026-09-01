@@ -107,6 +107,7 @@ let package = Package(
         .target(
             name: "Buffer Ring Primitive",
             dependencies: [
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Sequence Drain", package: "swift-sequence"),
                 .product(name: "Sequence", package: "swift-sequence"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
@@ -165,6 +166,7 @@ let package = Package(
         .target(
             name: "Buffer Ring Bounded Primitive",
             dependencies: [
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Sequence Drain", package: "swift-sequence"),
                 .product(name: "Sequence", package: "swift-sequence"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
