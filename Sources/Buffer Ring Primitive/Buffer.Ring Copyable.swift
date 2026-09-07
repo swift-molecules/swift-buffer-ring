@@ -7,8 +7,7 @@ public import Store_Operations
 public import Store_Protocol
 public import Store
 public import Span_Protocol
-public import Ownership_Inout
-public import Ownership_Borrow
+public import Ownership
 public import Ordinal_Tagged
 public import Ordinal_Protocol
 public import Ordinal_Cardinal
@@ -22,7 +21,6 @@ public import Index
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-public import Ownership
 public import Ordinal_Standard_Library_Integration
 public import Property
 public import Property_Ownership
