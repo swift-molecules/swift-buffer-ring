@@ -4,10 +4,6 @@ public import Ordinal_Tagged
 public import Ordinal
 public import Cardinal_Tagged
 public import Cardinal_Carrier
-public import Store_Ledgered
-public import Store_Operations
-public import Store_Initialization
-public import Store_Protocol
 public import Store
 public import Tagged
 public import Cardinal

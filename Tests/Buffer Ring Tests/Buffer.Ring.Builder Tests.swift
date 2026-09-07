@@ -6,10 +6,6 @@ import Cardinal_Tagged
 import Cardinal_Carrier
 import Cardinal
 import Tagged
-import Store_Ledgered
-import Store_Operations
-import Store_Initialization
-import Store_Protocol
 import Store
 import Cardinal_Standard_Library_Integration
 import Memory_Small

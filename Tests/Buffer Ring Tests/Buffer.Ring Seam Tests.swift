@@ -2,10 +2,6 @@ import Ordinal_Cardinal
 import Ordinal_Tagged
 import Cardinal_Tagged
 import Cardinal_Carrier
-import Store_Ledgered
-import Store_Operations
-import Store_Initialization
-import Store_Protocol
 import Store
 import Tagged
 import Cardinal

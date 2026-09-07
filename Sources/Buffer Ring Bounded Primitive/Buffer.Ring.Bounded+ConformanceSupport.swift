@@ -1,14 +1,9 @@
-public import Sequence_Protocol
-public import Iterator_Chunk
-public import Iterable
+public import Sequence
+public import Iterator
 public import Index
 public import Tagged
-public import Store_Ledgered
-public import Store_Initialization
-public import Store_Operations
-public import Store_Protocol
 public import Store
-public import Span_Protocol
+public import Span
 public import Ownership
 public import Ordinal_Tagged
 public import Ordinal_Protocol
@@ -18,7 +13,6 @@ public import Cardinal_Tagged
 public import Cardinal_Carrier
 public import Affine_Standard_Library_Integration
 public import Ordinal_Standard_Library_Integration
-public import Span
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

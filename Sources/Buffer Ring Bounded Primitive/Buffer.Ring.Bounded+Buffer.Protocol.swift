@@ -1,5 +1,4 @@
 public import Buffer
-public import Buffer_Protocol
 public import Cardinal
 public import Index
 public import Ordinal_Protocol
