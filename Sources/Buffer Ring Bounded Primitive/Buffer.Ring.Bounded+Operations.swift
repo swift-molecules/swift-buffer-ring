@@ -12,8 +12,7 @@ public import Cardinal
 public import Difference
 public import Index
 public import Memory_Allocator_Protocol
-public import Ordinal
-public import Property_Ownership
+public import Property
 public import Storage
 
 extension Buffer.Ring.Bounded where S: ~Copyable {

@@ -106,10 +106,6 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-property-ownership.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/swift-molecules/swift-memory-small.git",
             branch: "main"
         ),
@@ -155,7 +151,6 @@ let package = Package(
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
-                .product(name: "Property Ownership", package: "swift-property-ownership"),
             ]
         ),
         .target(
@@ -197,7 +192,6 @@ let package = Package(
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
-                .product(name: "Property Ownership", package: "swift-property-ownership"),
             ]
         ),
 

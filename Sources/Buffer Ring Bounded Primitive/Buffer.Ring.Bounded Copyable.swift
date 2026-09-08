@@ -15,12 +15,10 @@ public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Memory
 public import Memory_Small
-public import Ordinal
 public import Property
-public import Property_Ownership
+public import Tagged
 public import Storage_Memory
 public import Storage
-public import Tagged
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

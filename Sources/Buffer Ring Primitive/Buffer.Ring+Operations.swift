@@ -13,8 +13,7 @@ public import Difference
 public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
-public import Ordinal
-public import Property_Ownership
+public import Property
 public import Storage_Memory
 public import Storage
 

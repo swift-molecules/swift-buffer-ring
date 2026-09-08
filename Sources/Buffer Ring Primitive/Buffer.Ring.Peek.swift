@@ -11,7 +11,6 @@ public import Ordinal
 public import Cardinal_Tagged
 public import Cardinal
 public import Property
-public import Property_Ownership
 
 extension Buffer.Ring where S: ~Copyable {
 
