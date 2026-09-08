@@ -3,7 +3,6 @@ public import Ordinal_Cardinal
 public import Ordinal_Tagged
 public import Ordinal
 public import Cardinal_Tagged
-public import Cardinal_Carrier
 public import Store
 public import Tagged
 public import Cardinal

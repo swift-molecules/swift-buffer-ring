@@ -3,13 +3,12 @@ import Ordinal_Cardinal
 import Ordinal_Tagged
 import Ordinal
 import Cardinal_Tagged
-import Cardinal_Carrier
 import Store
 import Tagged
 import Cardinal
-import Cardinal_Standard_Library_Integration
-import Ordinal_Standard_Library_Integration
-import Tagged_Standard_Library_Integration
+import Cardinal
+import Ordinal
+import Tagged
 import Buffer_Ring
 import Memory_Allocator
 import Memory_Small

@@ -27,6 +27,18 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(
+            url: "https://github.com/swift-molecules/swift-cardinal-tagged.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-ordinal-cardinal.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-ordinal-tagged.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-atoms/swift-cyclic.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-store.git", branch: "main"),
         .package(
@@ -58,7 +70,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-affine.git",
+            url: "https://github.com/swift-atoms/swift-difference.git",
             branch: "main"
         ),
         .package(
@@ -109,11 +121,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Buffer", package: "swift-buffer"),
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -134,16 +144,14 @@ let package = Package(
                 .product(name: "Cyclic Index", package: "swift-cyclic-index"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
-                    name: "Affine Standard Library Integration",
-                    package: "swift-affine"
+                    name: "Difference",
+                    package: "swift-difference"
                 ),
-                .product(name: "Affine Tagged", package: "swift-affine"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -155,11 +163,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Buffer", package: "swift-buffer"),
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -180,16 +186,14 @@ let package = Package(
                 .product(name: "Cyclic Index", package: "swift-cyclic-index"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
-                    name: "Affine Standard Library Integration",
-                    package: "swift-affine"
+                    name: "Difference",
+                    package: "swift-difference"
                 ),
-                .product(name: "Affine Tagged", package: "swift-affine"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -201,11 +205,9 @@ let package = Package(
             name: "Buffer Ring",
             dependencies: [
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -216,15 +218,14 @@ let package = Package(
                 .product(name: "Cyclic Index", package: "swift-cyclic-index"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
-                    name: "Affine Standard Library Integration",
-                    package: "swift-affine"
+                    name: "Difference",
+                    package: "swift-difference"
                 ),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
@@ -233,12 +234,11 @@ let package = Package(
             name: "Buffer Ring Bounded",
             dependencies: [
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -253,12 +253,10 @@ let package = Package(
             name: "Buffer Ring Test Support",
             dependencies: [
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -284,12 +282,10 @@ let package = Package(
             name: "Buffer Ring Tests",
             dependencies: [
                 .product(name: "Sequence", package: "swift-sequence"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal-cardinal"),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal-tagged"),
                 .product(name: "Ownership", package: "swift-ownership"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
@@ -307,16 +303,16 @@ let package = Package(
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(
-                    name: "Cardinal Standard Library Integration",
+                    name: "Cardinal",
                     package: "swift-cardinal"
                 ),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(
-                    name: "Tagged Standard Library Integration",
+                    name: "Tagged",
                     package: "swift-tagged"
                 ),
             ]

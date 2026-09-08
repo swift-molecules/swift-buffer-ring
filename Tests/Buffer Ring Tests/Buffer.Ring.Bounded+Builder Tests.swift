@@ -3,17 +3,16 @@ import Ordinal_Cardinal
 import Ordinal_Tagged
 import Ordinal
 import Cardinal_Tagged
-import Cardinal_Carrier
 import Store
 import Cardinal
-import Cardinal_Standard_Library_Integration
+import Cardinal
 import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
 import Memory
 import Storage_Memory
 import Tagged
-import Tagged_Standard_Library_Integration
+import Tagged
 import Testing
 
 @Suite

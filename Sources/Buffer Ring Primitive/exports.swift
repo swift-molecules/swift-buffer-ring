@@ -6,11 +6,10 @@ public import Store
 public import Span
 public import Ownership
 public import Ordinal_Tagged
-public import Ordinal_Protocol
 public import Ordinal_Cardinal
 public import Ordinal
 public import Cardinal_Tagged
-public import Cardinal_Carrier
+public import Cardinal
 @_exported public import Buffer
 @_exported public import Cyclic_Index
 @_exported public import Memory_Allocator
