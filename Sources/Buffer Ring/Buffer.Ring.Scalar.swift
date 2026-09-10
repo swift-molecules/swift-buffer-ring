@@ -1,18 +1,18 @@
-public import Sequence
+import Sequence
 public import Iterator
 public import Store
 public import Span
-public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
-public import Cardinal_Tagged
+import Ownership
+import Ordinal_Tagged
+import Ordinal_Cardinal
+import Cardinal_Tagged
 public import Tagged
 public import Cardinal
 public import Ordinal
 public import Index
-public import Difference
+import Difference
 public import Ordinal
-public import Storage
+import Storage
 
 extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 

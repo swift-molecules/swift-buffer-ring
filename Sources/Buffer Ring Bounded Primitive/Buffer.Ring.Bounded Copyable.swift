@@ -1,12 +1,12 @@
-public import Sequence
-public import Iterator
-public import Store
-public import Span
+import Sequence
+import Iterator
+import Store
+import Span
 public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal_Cardinal
 public import Ordinal
-public import Cardinal_Tagged
+import Cardinal_Tagged
 public import Difference
 public import Cardinal
 public import Cyclic_Index

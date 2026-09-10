@@ -1,16 +1,16 @@
-public import Sequence
-public import Iterator
+import Sequence
+import Iterator
 public import Store
-public import Span
-public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
+import Span
+import Ownership
+import Ordinal_Tagged
+import Ordinal_Cardinal
 public import Ordinal
-public import Cardinal_Tagged
+import Cardinal_Tagged
 public import Tagged
 public import Cardinal
-public import Difference
-public import Index
+import Difference
+import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Property

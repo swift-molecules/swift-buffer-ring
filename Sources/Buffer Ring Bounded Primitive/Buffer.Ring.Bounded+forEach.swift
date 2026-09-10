@@ -1,18 +1,18 @@
-public import Sequence
-public import Iterator
-public import Index
+import Sequence
+import Iterator
+import Index
 public import Tagged
 public import Store
-public import Span
-public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
+import Span
+import Ownership
+import Ordinal_Tagged
+import Ordinal_Cardinal
 public import Ordinal
-public import Cardinal_Tagged
+import Cardinal_Tagged
 public import Cardinal
-public import Difference
+import Difference
 public import Ordinal
-public import Storage
+import Storage
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

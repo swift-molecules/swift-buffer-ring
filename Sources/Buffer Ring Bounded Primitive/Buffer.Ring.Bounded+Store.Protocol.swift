@@ -1,18 +1,18 @@
-public import Sequence
-public import Iterator
+import Sequence
+import Iterator
 public import Store
-public import Span
-public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
-public import Cardinal_Tagged
+import Span
+import Ownership
+import Ordinal_Tagged
+import Ordinal_Cardinal
+import Cardinal_Tagged
 public import Difference
 public import Cardinal
 public import Cyclic_Index
 public import Index
 public import Ordinal
 public import Ordinal
-public import Storage
+import Storage
 public import Tagged
 
 extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~Copyable {

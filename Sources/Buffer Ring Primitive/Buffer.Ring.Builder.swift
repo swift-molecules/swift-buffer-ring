@@ -1,19 +1,19 @@
-public import Sequence
-public import Iterator
-public import Index
+import Sequence
+import Iterator
+import Index
 public import Tagged
-public import Store
-public import Span
-public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
-public import Ordinal
-public import Cardinal_Tagged
+import Store
+import Span
+import Ownership
+import Ordinal_Tagged
+import Ordinal_Cardinal
+import Ordinal
+import Cardinal_Tagged
 public import Cardinal
 public import Memory_Small
-public import Difference
+import Difference
 public import Buffer
-public import Ordinal
+import Ordinal
 
 extension Buffer.Ring where S: ~Copyable {
 

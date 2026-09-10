@@ -1,15 +1,15 @@
-public import Sequence
-public import Iterator
-public import Index
-public import Tagged
+import Sequence
+import Iterator
+import Index
+import Tagged
 public import Store
-public import Span
+import Span
 public import Ownership
-public import Ordinal_Tagged
-public import Ordinal_Cardinal
-public import Ordinal
-public import Cardinal_Tagged
-public import Cardinal
+import Ordinal_Tagged
+import Ordinal_Cardinal
+import Ordinal
+import Cardinal_Tagged
+import Cardinal
 public import Memory
 public import Memory_Allocator
 public import Memory_Small
