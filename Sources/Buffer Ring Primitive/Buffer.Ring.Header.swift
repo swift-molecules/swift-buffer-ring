@@ -3,15 +3,16 @@ import Iterator
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 public import Ordinal
-import Cardinal_Tagged
 public import Tagged
 public import Cardinal
 import Difference
 public import Index
-public import Ordinal
 
 extension Buffer.Ring where S: ~Copyable {
 

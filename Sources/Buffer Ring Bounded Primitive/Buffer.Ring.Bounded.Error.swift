@@ -5,11 +5,10 @@ import Tagged
 import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Ordinal
-import Cardinal_Tagged
 import Cardinal
+import Ordinal
+import Property
+import Carrier
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
     public enum Error: Swift.Error, Sendable, Equatable {

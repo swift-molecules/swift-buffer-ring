@@ -1,15 +1,14 @@
 public import Index
-public import Ordinal_Cardinal
-public import Ordinal_Tagged
-public import Ordinal
-public import Cardinal_Tagged
-public import Store
-public import Tagged
 public import Cardinal
+public import Carrier
+public import Ordinal
+public import Tagged
+public import Property
+public import Store
 public import Memory_Small
 public import Buffer_Ring
 import Memory
-public import Storage_Memory
+public import Storage
 import Storage
 
 extension Buffer.Ring where S: Store.`Protocol`, S: ~Copyable {

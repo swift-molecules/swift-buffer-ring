@@ -5,14 +5,15 @@ public import Tagged
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 public import Ordinal
-import Cardinal_Tagged
 public import Cardinal
 public import Difference
-public import Cyclic_Index
-public import Ordinal
+public import Cyclic
 import Storage
 
 extension Buffer.Ring where S: ~Copyable {

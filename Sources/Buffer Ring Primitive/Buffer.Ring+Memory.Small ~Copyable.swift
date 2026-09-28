@@ -4,14 +4,15 @@ public import Index
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 public import Ordinal
-import Cardinal_Tagged
 public import Difference
 public import Cardinal
-public import Cyclic_Index
-public import Ordinal
+public import Cyclic
 import Storage
 public import Tagged
 

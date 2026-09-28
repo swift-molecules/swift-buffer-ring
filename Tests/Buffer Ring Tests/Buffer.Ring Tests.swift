@@ -1,19 +1,15 @@
 import Index
-import Ordinal_Cardinal
-import Ordinal_Tagged
+import Cardinal
+import Carrier
 import Ordinal
-import Cardinal_Tagged
+import Tagged
+import Property
 import Store
-import Tagged
-import Cardinal
-import Cardinal
-import Ordinal
-import Tagged
 import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
 import Memory
-import Storage_Memory
+import Storage
 import Testing
 
 @Suite

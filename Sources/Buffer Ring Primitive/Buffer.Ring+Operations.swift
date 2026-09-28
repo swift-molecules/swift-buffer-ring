@@ -3,10 +3,12 @@ import Iterator
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 public import Ordinal
-import Cardinal_Tagged
 public import Tagged
 public import Cardinal
 import Difference
@@ -14,7 +16,6 @@ import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Property
-public import Storage_Memory
 public import Storage
 
 extension Buffer.Ring where S: ~Copyable {
@@ -84,8 +85,8 @@ extension Buffer.Ring where S: ~Copyable {
             var dst = offset
             while src < range.upperBound {
                 newStorage.initialize(at: dst, to: storage.move(at: src))
-                src += .one
-                dst += .one
+                src += Tagged<Element, Cardinal>.one
+                dst += Tagged<Element, Cardinal>.one
             }
         }
         storage = newStorage

@@ -3,14 +3,15 @@ import Iterator
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Cardinal_Tagged
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 public import Difference
 public import Cardinal
-public import Cyclic_Index
+public import Cyclic
 public import Index
-public import Ordinal
 public import Ordinal
 import Storage
 public import Tagged

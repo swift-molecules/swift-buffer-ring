@@ -4,14 +4,12 @@ import Tagged
 public import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Ordinal
-import Cardinal_Tagged
 import Cardinal
+import Ordinal
+import Property
+import Carrier
 import Difference
 import Index
-import Ordinal
 import Storage
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {

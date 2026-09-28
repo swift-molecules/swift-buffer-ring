@@ -5,10 +5,9 @@ import Tagged
 import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Ordinal
-import Cardinal_Tagged
 import Cardinal
+import Ordinal
+import Property
+import Carrier
 @_exported public import Buffer_Ring_Bounded
 @_exported public import Buffer_Ring_Primitive

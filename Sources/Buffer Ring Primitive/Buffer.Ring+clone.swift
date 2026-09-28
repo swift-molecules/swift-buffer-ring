@@ -3,17 +3,18 @@ import Iterator
 import Store
 import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Cardinal_Tagged
+import Cardinal
+import Ordinal
+import Property
+import Tagged
+import Carrier
 import Difference
 public import Cardinal
 public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Ordinal
-public import Ordinal
-public import Storage_Memory
+public import Storage
 public import Tagged
 
 extension Buffer.Ring where S: ~Copyable {
@@ -26,7 +27,7 @@ extension Buffer.Ring where S: ~Copyable {
         let end = header.count.map { Ordinal($0.rawValue) }
         while slot < end {
             fresh.initialize(at: slot, to: self[slot])
-            slot = (slot + .one)
+            slot = (slot + Tagged<Element, Cardinal>.one)
         }
         var copy = Self(header: Header(capacity: fresh.capacity), storage: fresh)
         copy.header.count = header.count

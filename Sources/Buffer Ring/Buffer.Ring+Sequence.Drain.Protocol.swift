@@ -5,11 +5,10 @@ import Tagged
 public import Store
 public import Span
 import Ownership
-import Ordinal_Tagged
-import Ordinal_Cardinal
-import Ordinal
-import Cardinal_Tagged
 import Cardinal
+import Ordinal
+import Property
+import Carrier
 
 extension Buffer.Ring: Sequence.Drain.`Protocol` where S: ~Copyable {
 
