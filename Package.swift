@@ -27,7 +27,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-atoms/swift-cyclic.git", branch: "main", traits: ["Index"]),
+        .package(url: "https://github.com/swift-atoms/swift-cyclic.git", branch: "main", traits: ["Index", "Tagged"]),
         .package(url: "https://github.com/swift-atoms/swift-store.git", branch: "main"),
         .package(
             url: "https://github.com/swift-atoms/swift-buffer.git",
@@ -38,7 +38,7 @@ let package = Package(
             branch: "main", traits: ["Generational", "Memory"]),
         .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
-            branch: "main", traits: ["MemorySmall"]),
+            branch: "main", traits: ["MemorySmall", "MemoryAllocatorArena", "MemoryInline"]),
         .package(
             url: "https://github.com/swift-atoms/swift-span.git",
             branch: "main"
