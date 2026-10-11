@@ -249,7 +249,7 @@ extension `Buffer.Ring.Builder Tests`.EdgeCase {
             9
             10
         }
-        #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == Swift.Array(1...10))
+        #expect(`Buffer.Ring.Builder Tests`.collected(buffer) == Swift::Array(1...10))
     }
 }
 

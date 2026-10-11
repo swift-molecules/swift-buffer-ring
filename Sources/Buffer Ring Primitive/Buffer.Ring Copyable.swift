@@ -3,10 +3,6 @@ import Iterator
 import Store
 import Span
 public import Ownership
-import Cardinal
-import Ordinal
-import Property
-import Tagged
 import Carrier
 public import Ordinal
 public import Cardinal

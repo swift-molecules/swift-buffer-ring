@@ -7,7 +7,6 @@ import Span
 import Ownership
 import Cardinal
 import Ordinal
-import Property
 import Carrier
 public import Property
 

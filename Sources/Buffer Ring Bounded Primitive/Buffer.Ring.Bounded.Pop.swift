@@ -7,11 +7,10 @@ import Span
 public import Ownership
 import Cardinal
 import Ordinal
-import Property
 import Carrier
 public import Memory
 public import Memory_Allocator
-public import Memory_Small
+import Memory_Small
 public import Property
 public import Storage
 public import Memory_Allocator_Protocol

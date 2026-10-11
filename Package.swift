@@ -133,7 +133,7 @@ let package = Package(
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                "Buffer Ring Primitive",
+                .target(name: "Buffer Ring Primitive"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(
                     name: "Memory Allocator",
@@ -171,8 +171,8 @@ let package = Package(
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                "Buffer Ring Primitive",
-                "Buffer Ring Bounded",
+                .target(name: "Buffer Ring Primitive"),
+                .target(name: "Buffer Ring Bounded"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
@@ -203,7 +203,7 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                "Buffer Ring Bounded Primitive",
+                .target(name: "Buffer Ring Bounded Primitive"),
                 .product(name: "Carrier", package: "swift-carrier"),
                 .product(name: "Property", package: "swift-property"),
             ]
@@ -218,8 +218,8 @@ let package = Package(
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                "Buffer Ring",
-                "Buffer Ring Bounded",
+                .target(name: "Buffer Ring"),
+                .target(name: "Buffer Ring Bounded"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(
                     name: "Memory Allocator",
@@ -245,8 +245,8 @@ let package = Package(
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                "Buffer Ring",
-                "Buffer Ring Test Support",
+                .target(name: "Buffer Ring"),
+                .target(name: "Buffer Ring Test Support"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(
@@ -280,20 +280,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-
-    let package: [SwiftSetting] = [
-        .enableExperimentalFeature("BuiltinModule"),
-        .enableExperimentalFeature("RawLayout"),
-    ]
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

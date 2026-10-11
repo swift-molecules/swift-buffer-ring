@@ -1,15 +1,14 @@
-public import Index
+import Index
 public import Cardinal
-public import Carrier
-public import Ordinal
+import Carrier
+import Ordinal
 public import Tagged
-public import Property
+import Property
 public import Store
 public import Memory_Small
 public import Buffer_Ring
 import Memory
 public import Storage
-import Storage
 
 extension Buffer.Ring where S: Store.`Protocol`, S: ~Copyable {
 
@@ -19,7 +18,7 @@ extension Buffer.Ring where S: Store.`Protocol`, S: ~Copyable {
         minimumCapacity: UInt = 0
     ) where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
         let cap: Tagged<E, Cardinal> = .init(
-            _unchecked: Cardinal(Swift.max(UInt(elements.count), minimumCapacity))
+            _unchecked: Cardinal(Swift::max(UInt(elements.count), minimumCapacity))
         )
         var buffer = Self(minimumCapacity: cap)
         for element in elements {

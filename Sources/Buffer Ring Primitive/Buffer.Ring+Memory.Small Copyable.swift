@@ -6,14 +6,11 @@ public import Tagged
 public import Store
 import Span
 import Ownership
-import Cardinal
-import Ordinal
 import Property
-import Tagged
 import Carrier
 public import Ordinal
 public import Cardinal
-public import Memory_Small
+import Memory_Small
 import Difference
 public import Memory_Allocator_Protocol
 

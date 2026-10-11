@@ -11,7 +11,7 @@ import Property
 import Carrier
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
-    public enum Error: Swift.Error, Sendable, Equatable {
+    public enum Error: Swift::Error, Sendable, Equatable {
 
         case capacityExceeded
     }

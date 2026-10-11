@@ -37,7 +37,7 @@ extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable {
 
     @inlinable
     @_lifetime(borrow self)
-    package borrowing func _span() -> Swift.Span<S.Element> {
+    package borrowing func _span() -> Swift::Span<S.Element> {
         storage.span
     }
 }

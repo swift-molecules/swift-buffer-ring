@@ -4,10 +4,7 @@ public import Index
 public import Store
 import Span
 import Ownership
-import Cardinal
-import Ordinal
 import Property
-import Tagged
 import Carrier
 public import Ordinal
 public import Difference

@@ -6,13 +6,11 @@ public import Tagged
 import Store
 import Span
 import Ownership
-import Cardinal
 import Ordinal
 import Property
-import Tagged
 import Carrier
 public import Cardinal
-public import Memory_Small
+import Memory_Small
 import Difference
 public import Buffer
 public import Memory_Allocator_Protocol
@@ -157,7 +155,7 @@ extension Buffer.Ring where S: ~Copyable {
 extension Buffer.Ring.Builder where S: ~Copyable {
 
     @inlinable
-    public static func buildExpression<E, Seq: Swift.Sequence, Resource: Memory.Growable & ~Copyable>(
+    public static func buildExpression<E, Seq: Swift::Sequence, Resource: Memory.Growable & ~Copyable>(
         _ expression: Seq
     ) -> Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<E>>.Ring
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<E>, E: Copyable, Seq.Element == E {
