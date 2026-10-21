@@ -35,10 +35,14 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-storage.git",
-            branch: "main", traits: ["Generational", "Memory"]),
+            branch: "main",
+            traits: ["Generational", "Memory"]
+        ),
         .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
-            branch: "main", traits: ["MemorySmall", "MemoryAllocatorArena", "MemoryInline"]),
+            branch: "main",
+            traits: ["MemorySmall", "MemoryAllocatorArena", "MemoryInline"]
+        ),
         .package(
             url: "https://github.com/swift-atoms/swift-span.git",
             branch: "main"
@@ -274,20 +278,28 @@ let package = Package(
             ]
         ),
 
-        .testTarget(name: "Buffer Ring Decision Column Integration Tests", dependencies: [.target(name: "Buffer Ring"), .target(name: "Buffer Ring Bounded"), .product(name: "Buffer", package: "swift-buffer"), .product(name: "Storage", package: "swift-storage"), .product(name: "Memory Allocator", package: "swift-memory-allocation"), .product(name: "Memory", package: "swift-memory"), .product(name: "Index", package: "swift-index")], path: "Tests/Buffer Ring Decision Column Integration Tests"),
+        .testTarget(
+            name: "Buffer Ring Decision Column Integration Tests",
+            dependencies: [
+                .target(name: "Buffer Ring"), .target(name: "Buffer Ring Bounded"), .product(name: "Buffer", package: "swift-buffer"), .product(name: "Storage", package: "swift-storage"),
+                .product(name: "Memory Allocator", package: "swift-memory-allocation"), .product(name: "Memory", package: "swift-memory"), .product(name: "Index", package: "swift-index"),
+            ],
+            path: "Tests/Buffer Ring Decision Column Integration Tests"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }

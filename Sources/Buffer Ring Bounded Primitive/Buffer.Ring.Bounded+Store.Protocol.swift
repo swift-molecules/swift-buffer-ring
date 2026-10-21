@@ -1,16 +1,16 @@
-import Sequence
+public import Cardinal
+import Carrier
+public import Cyclic
+public import Difference
+public import Index
 import Iterator
-public import Store
-import Span
+public import Ordinal
 import Ownership
 import Property
-import Carrier
-public import Difference
-public import Cardinal
-public import Cyclic
-public import Index
-public import Ordinal
+import Sequence
+import Span
 import Storage
+public import Store
 public import Tagged
 
 extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~Copyable {

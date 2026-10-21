@@ -1,20 +1,20 @@
-import Sequence
-import Iterator
-import Store
-import Span
-public import Ownership
-import Carrier
-public import Ordinal
 public import Cardinal
-public import Difference
+import Carrier
 public import Cyclic
+public import Difference
 public import Index
-public import Memory_Allocator
+import Iterator
 public import Memory
+public import Memory_Allocator
 public import Memory_Small
+public import Ordinal
+public import Ownership
 public import Property
-public import Tagged
+import Sequence
+import Span
 public import Storage
+import Store
+public import Tagged
 
 extension Property.Borrow.Typed
 where

@@ -1,10 +1,10 @@
-import Index
+@_exported public import Buffer_Ring
+@_exported public import Buffer_Ring_Bounded
 import Cardinal
 import Carrier
+import Index
+@_exported public import Memory
 import Ordinal
-import Tagged
 import Property
 import Store
-@_exported public import Buffer_Ring_Bounded
-@_exported public import Buffer_Ring
-@_exported public import Memory
+import Tagged

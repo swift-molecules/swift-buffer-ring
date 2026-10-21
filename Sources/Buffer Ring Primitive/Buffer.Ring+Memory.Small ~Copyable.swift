@@ -1,16 +1,16 @@
-import Sequence
-import Iterator
+public import Cardinal
+import Carrier
+public import Cyclic
+public import Difference
 public import Index
-public import Store
-import Span
+import Iterator
+public import Ordinal
 import Ownership
 import Property
-import Carrier
-public import Ordinal
-public import Difference
-public import Cardinal
-public import Cyclic
+import Sequence
+import Span
 import Storage
+public import Store
 public import Tagged
 
 extension Buffer.Ring where S: ~Copyable {

@@ -1,15 +1,15 @@
-import Sequence
-import Iterator
-import Index
-import Tagged
-public import Store
-public import Span
-import Ownership
 import Cardinal
-import Ordinal
-import Property
 import Carrier
 import Difference
+import Index
+import Iterator
+import Ordinal
+import Ownership
+import Property
+import Sequence
+public import Span
+public import Store
+import Tagged
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

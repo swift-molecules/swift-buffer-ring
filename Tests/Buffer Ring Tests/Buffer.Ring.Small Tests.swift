@@ -1,14 +1,14 @@
-import Index
+import Buffer_Ring
 import Cardinal
 import Carrier
-import Ordinal
-import Tagged
-import Property
-import Store
-import Buffer_Ring
+import Index
 import Memory_Allocator
 import Memory_Small
+import Ordinal
+import Property
 import Storage
+import Store
+import Tagged
 import Testing
 
 @Suite

@@ -1,17 +1,17 @@
-import Sequence
-import Iterator
-import Index
-import Tagged
-import Store
-import Span
-import Ownership
-import Cardinal
-import Ordinal
-import Property
-import Carrier
 @_exported public import Buffer
+import Cardinal
+import Carrier
 @_exported public import Cyclic
+import Index
+import Iterator
+@_exported public import Memory
 @_exported public import Memory_Allocator
 @_exported public import Memory_Small
-@_exported public import Memory
+import Ordinal
+import Ownership
+import Property
+import Sequence
+import Span
 @_exported public import Storage
+import Store
+import Tagged

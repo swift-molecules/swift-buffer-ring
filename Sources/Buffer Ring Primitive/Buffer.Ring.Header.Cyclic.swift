@@ -1,15 +1,15 @@
+public import Cardinal
+import Carrier
 public import Cyclic
-import Sequence
+import Index
 import Iterator
-public import Store
-import Span
+public import Ordinal
 import Ownership
 import Property
-import Carrier
-public import Ordinal
+import Sequence
+import Span
+public import Store
 public import Tagged
-public import Cardinal
-import Index
 
 extension Buffer.Ring.Header where S: ~Copyable {
 

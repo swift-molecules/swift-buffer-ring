@@ -1,14 +1,14 @@
-public import Sequence
-import Iterator
-import Index
-import Tagged
-public import Store
-import Span
-import Ownership
 import Cardinal
-import Ordinal
-import Property
 import Carrier
+import Index
+import Iterator
+import Ordinal
+import Ownership
+import Property
+public import Sequence
+import Span
+public import Store
+import Tagged
 
 extension Buffer.Ring.Bounded: Sequence.Drain.`Protocol` where S: ~Copyable {
 

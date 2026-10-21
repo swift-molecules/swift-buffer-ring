@@ -1,14 +1,14 @@
-public import Sequence
-import Iterator
-import Index
-import Tagged
-public import Store
-public import Span
-import Ownership
 import Cardinal
-import Ordinal
-import Property
 import Carrier
+import Index
+import Iterator
+import Ordinal
+import Ownership
+import Property
+public import Sequence
+public import Span
+public import Store
+import Tagged
 
 extension Buffer.Ring: Sequenceable where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 

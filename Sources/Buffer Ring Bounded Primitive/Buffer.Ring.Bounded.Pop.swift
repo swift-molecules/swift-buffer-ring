@@ -1,19 +1,19 @@
-import Sequence
-import Iterator
-import Index
-import Tagged
-public import Store
-import Span
-public import Ownership
 import Cardinal
-import Ordinal
 import Carrier
+import Index
+import Iterator
 public import Memory
 public import Memory_Allocator
-import Memory_Small
-public import Property
-public import Storage
 public import Memory_Allocator_Protocol
+import Memory_Small
+import Ordinal
+public import Ownership
+public import Property
+import Sequence
+import Span
+public import Storage
+public import Store
+import Tagged
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
@@ -29,18 +29,21 @@ extension Buffer.Ring.Bounded.Pop where S: ~Copyable {
 
 extension Property.Inout.Typed where Base: ~Copyable, Element: ~Copyable {
 
-
     @inlinable
     public mutating func front<Resource: Memory.Growable & ~Copyable>() -> Element
-    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Pop,
-    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Bounded {
+    where
+        Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Pop,
+        Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Bounded
+    {
         base.value._popFront()
     }
 
     @inlinable
     public mutating func back<Resource: Memory.Growable & ~Copyable>() -> Element
-    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Pop,
-    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Bounded {
+    where
+        Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Pop,
+        Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Ring.Bounded
+    {
         base.value._popBack()
     }
 }

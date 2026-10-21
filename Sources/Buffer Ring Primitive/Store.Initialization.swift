@@ -1,15 +1,15 @@
+public import Cardinal
+import Carrier
 public import Cyclic
-import Sequence
+public import Index
 import Iterator
-public import Store
-import Span
+public import Ordinal
 import Ownership
 import Property
-import Carrier
-public import Cardinal
-public import Index
-public import Ordinal
+import Sequence
+import Span
 import Storage
+public import Store
 public import Tagged
 
 extension Store.Initialization where Element: ~Copyable & ~Escapable {
@@ -29,7 +29,8 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
         if tail <= capacity {
             self = .one((header.head)..<((header.head) + header.count))
         } else {
-            let firstCount = header.capacity.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(header.head.ordinal))
+            let firstCount = header.capacity.subtract.saturating(
+                Tagged<Element, Cardinal>(_unchecked: Cardinal(header.head.ordinal))
             )
             self = .two(
                 first: (header.head)..<((header.head) + firstCount),
@@ -57,7 +58,8 @@ extension Store.Initialization where Element: ~Copyable & ~Escapable {
         if tail <= Index<Element>(_unchecked: Ordinal(slotCapacity.underlying)) {
             self = .one((headIndex)..<((headIndex) + header.count))
         } else {
-            let firstCount = slotCapacity.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(headIndex.ordinal))
+            let firstCount = slotCapacity.subtract.saturating(
+                Tagged<Element, Cardinal>(_unchecked: Cardinal(headIndex.ordinal))
             )
             self = .two(
                 first: (headIndex)..<((headIndex) + firstCount),

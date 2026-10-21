@@ -1,14 +1,15 @@
-import Sequence
-import Iterator
-import Index
-import Tagged
-import Store
-import Span
-import Ownership
 import Cardinal
-import Ordinal
-import Property
 import Carrier
+import Index
+import Iterator
+import Ordinal
+import Ownership
+import Property
+import Sequence
+import Span
+import Store
+import Tagged
+
 extension Buffer.Ring.Bounded where S: ~Copyable {
 
     public enum Error: Swift::Error, Sendable, Equatable {

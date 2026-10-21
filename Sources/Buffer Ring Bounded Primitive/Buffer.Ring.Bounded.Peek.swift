@@ -1,14 +1,14 @@
-import Sequence
-import Iterator
-import Index
-import Tagged
-public import Store
-import Span
-import Ownership
 import Cardinal
-import Ordinal
 import Carrier
+import Index
+import Iterator
+import Ordinal
+import Ownership
 public import Property
+import Sequence
+import Span
+public import Store
+import Tagged
 
 extension Buffer.Ring.Bounded where S: ~Copyable {
 

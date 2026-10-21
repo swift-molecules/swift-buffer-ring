@@ -1,15 +1,15 @@
-import Index
-import Cardinal
-import Carrier
-import Ordinal
-import Tagged
-import Property
-import Store
-import Memory_Small
 import Buffer_Ring
 import Buffer_Ring_Test_Support
+import Cardinal
+import Carrier
+import Index
 import Memory
+import Memory_Small
+import Ordinal
+import Property
 import Storage
+import Store
+import Tagged
 import Testing
 
 @Suite
@@ -43,8 +43,7 @@ extension `Buffer.Ring.Bounded+Builder Tests`.Overflow {
 
     @Test
     func `Throws on overflow`() {
-        do throws(Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Bounded.Error)
-        {
+        do throws(Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Bounded.Error) {
             _ = try Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring.Bounded(
                 minimumCapacity: .init(_unchecked: Cardinal(UInt(2)))
             ) {
