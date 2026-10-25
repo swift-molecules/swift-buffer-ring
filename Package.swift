@@ -120,7 +120,6 @@ let package = Package(
                     name: "Ordinal",
                     package: "swift-ordinal"
                 ),
-                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -157,7 +156,6 @@ let package = Package(
                     name: "Ordinal",
                     package: "swift-ordinal"
                 ),
-                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
@@ -187,7 +185,6 @@ let package = Package(
                     name: "Ordinal",
                     package: "swift-ordinal"
                 ),
-                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Carrier", package: "swift-carrier"),
@@ -259,19 +256,7 @@ let package = Package(
                 ),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(
-                    name: "Cardinal",
-                    package: "swift-cardinal"
-                ),
-                .product(
-                    name: "Ordinal",
-                    package: "swift-ordinal"
-                ),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(
-                    name: "Tagged",
-                    package: "swift-tagged"
-                ),
                 .product(name: "Carrier", package: "swift-carrier"),
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Memory Small", package: "swift-memory-allocation"),
