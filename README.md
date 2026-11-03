@@ -1,0 +1,15 @@
+# swift-buffer-ring
+
+Use this package when you need a double-ended circular buffer over a `Store.Protocol` substrate, holding `~Copyable` elements in place: start from `Buffer<S>.Ring` when the buffer may grow, and from `Buffer<S>.Ring.Bounded` when its capacity is fixed and a full buffer must refuse new elements. To embed ring logic in storage you own, use the static operations on `Buffer<S>.Ring` over a `Buffer<S>.Ring.Header`. For a queue or deque with collection semantics, use swift-queue or swift-deque, which build on this package; for a growable buffer without wrap-around, use swift-buffer-linear.
+
+## Laws
+
+- Logical index 0 is the front, whatever the physical position of the head. `push.back` with `pop.front` is FIFO; `push.front` with `pop.back` is its mirror. The subscript, `forEach`, `drain` and `clone()` all follow logical order across a physical wrap.
+- `capacity` is what the storage provides, which may exceed the requested minimum.
+- `Buffer<S>.Ring` grows only when a push meets a full ring: zero capacity becomes one, otherwise capacity doubles (saturating). Growth moves the elements into new storage, with the front at physical slot 0. `reserveCapacity` grows only when asked for more than `capacity` and never shrinks. `compact()` does nothing on a full ring, releases the storage of an empty ring, and otherwise moves the elements into storage sized to `count`.
+- `Buffer<S>.Ring.Bounded` never reallocates. A push onto a full ring returns the rejected element and leaves the ring unchanged: nothing is evicted. A successful push returns `nil`. Building a bounded ring from an array or a `Buffer<S>.Ring.Builder` block throws when there are more elements than the requested capacity, checked against the request, not the storage's rounded-up capacity.
+- `initialize(at:to:)` and `move(at:)` (the `Store.Protocol` seam) work in logical slots and only at the ends: `initialize(at:to:)` only appends, at slot `count`, on a ring that is not full; `move(at:)` only at slot 0 or slot `count - 1`, on a ring that is not empty. Anything else traps. Through the seam, even `Buffer<S>.Ring` does not grow.
+- `remove.all()` and `drain` keep the capacity and reset the head to physical slot 0.
+- `checkpoint` records only the head and the count; `restore(to:)` writes them back without touching any element. Elements pushed at the back after the checkpoint drop out of the ring. Two `Buffer<S>.Ring.Checkpoint` values are equal when their counts are equal, and the one with more elements orders first.
+- `clone()` copies into new storage with the same capacity and the front at physical slot 0; the copy shares nothing with the original.
+- `Buffer<S>.Ring.Builder` appends its elements in the order they are written. An optional that is `nil` adds nothing, and nested blocks are joined in order by moving their elements.
