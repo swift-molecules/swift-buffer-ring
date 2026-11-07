@@ -24,7 +24,7 @@ extension `Buffer.Ring.Small Tests` {
 
         var ring = Buffer<SmallColumn>.Ring(minimumCapacity: 4)
 
-        for value in 1...16 {
+        (1...16).forEach { value in
             ring.pushBack(value)
         }
         #expect(ring.count.underlying.rawValue == 16)

@@ -358,9 +358,9 @@ extension `Buffer.Ring Tests`.Integration {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 8
         )
-        for i in 0..<8 { buffer.push.back(i) }
+        (0..<8).forEach { i in buffer.push.back(i) }
         for _ in 0..<5 { _ = buffer.pop.front() }
-        for i in 100..<104 { buffer.push.back(i) }
+        (100..<104).forEach { i in buffer.push.back(i) }
 
         var collected: [Int] = []
         buffer.drain { collected.append($0) }
@@ -372,7 +372,7 @@ extension `Buffer.Ring Tests`.Integration {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Ring(
             minimumCapacity: 8
         )
-        for i in 0..<4 { buffer.push.back(i) }
+        (0..<4).forEach { i in buffer.push.back(i) }
         for _ in 0..<2 { _ = buffer.pop.front() }
 
         var collected: [Int] = []

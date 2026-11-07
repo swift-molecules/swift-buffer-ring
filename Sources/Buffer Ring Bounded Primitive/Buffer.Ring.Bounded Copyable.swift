@@ -61,7 +61,6 @@ where
     }
 }
 
-// Canonical Heap views; existing Small views remain available.
 extension Property.Borrow.Typed
 where
     Tag == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Ring.Peek,
