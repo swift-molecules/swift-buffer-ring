@@ -15,6 +15,9 @@ import Testing
 @Suite
 struct `Buffer.Ring.Static Tests` {
     @Suite struct Unit {}
+}
+
+extension `Buffer.Ring.Static Tests` {
     @Suite struct EdgeCase {}
 }
 

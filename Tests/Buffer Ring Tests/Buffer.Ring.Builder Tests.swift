@@ -15,9 +15,14 @@ import Testing
 @Suite
 struct `Buffer.Ring.Builder Tests` {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
     @Suite struct Integration {}
+}
+
+extension `Buffer.Ring.Builder Tests` {
+    @Suite struct EdgeCase {}
+
     @Suite struct NonCopyable {}
+
     @Suite struct StaticMethods {}
 }
 

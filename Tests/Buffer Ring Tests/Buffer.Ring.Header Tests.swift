@@ -15,6 +15,9 @@ import Testing
 @Suite
 struct `Buffer.Ring.Header Tests` {
     @Suite struct Unit {}
+}
+
+extension `Buffer.Ring.Header Tests` {
     @Suite struct EdgeCase {}
 }
 

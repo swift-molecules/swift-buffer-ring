@@ -15,8 +15,11 @@ import Testing
 @Suite
 struct `Buffer.Ring.Bounded Tests` {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
     @Suite struct Integration {}
+}
+
+extension `Buffer.Ring.Bounded Tests` {
+    @Suite struct EdgeCase {}
 }
 
 extension `Buffer.Ring.Bounded Tests`.Unit {

@@ -14,8 +14,13 @@ import Testing
 
 @Suite
 struct `Buffer.Ring.Bounded+Builder Tests` {
+}
+
+extension `Buffer.Ring.Bounded+Builder Tests` {
     @Suite struct WithinCapacity {}
+
     @Suite struct Overflow {}
+
     @Suite struct NonCopyable {}
 }
 
