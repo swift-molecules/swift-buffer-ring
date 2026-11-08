@@ -1,8 +1,11 @@
 import Cardinal
 import Carrier
+public import Cyclic
 import Difference
 import Index
 import Iterator
+public import Memory_Allocator
+public import Memory_Allocator_Protocol
 import Ordinal
 import Ownership
 import Property
@@ -11,9 +14,6 @@ import Span
 import Storage
 public import Store
 import Tagged
-public import Cyclic
-public import Memory_Allocator
-public import Memory_Allocator_Protocol
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {
 
