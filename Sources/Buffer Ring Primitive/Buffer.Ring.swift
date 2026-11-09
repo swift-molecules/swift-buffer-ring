@@ -389,7 +389,7 @@ extension Buffer.Ring where S: ~Copyable {
     public subscript(index: Index<S.Element>) -> S.Element {
         _read {
             precondition(
-                index < header.count.map { Ordinal($0.rawValue) },
+                index < header.count.map { Ordinal($0) },
                 "ring: index out of range"
             )
             let physical = Index.Modular.physical(
@@ -401,7 +401,7 @@ extension Buffer.Ring where S: ~Copyable {
         }
         _modify {
             precondition(
-                index < header.count.map { Ordinal($0.rawValue) },
+                index < header.count.map { Ordinal($0) },
                 "ring: index out of range"
             )
             let physical = Index.Modular.physical(

@@ -19,7 +19,7 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
     public subscript(slot: Index<S.Element>) -> S.Element {
         _read {
             precondition(
-                slot < header.count.map { Ordinal($0.rawValue) },
+                slot < header.count.map { Ordinal($0) },
                 "ring: index out of range"
             )
             yield storage[
@@ -32,7 +32,7 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
         }
         _modify {
             precondition(
-                slot < header.count.map { Ordinal($0.rawValue) },
+                slot < header.count.map { Ordinal($0) },
                 "ring: index out of range"
             )
             yield &storage[
