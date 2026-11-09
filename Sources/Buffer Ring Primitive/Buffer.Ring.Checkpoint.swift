@@ -20,10 +20,18 @@ extension Buffer.Ring where S: ~Copyable {
         @usableFromInline
         package let count: Tagged<S.Element, Cardinal>
 
+        @usableFromInline
+        package let capacity: Tagged<S.Element, Cardinal>
+
         @inlinable
-        package init(head: Index<S.Element>, count: Tagged<S.Element, Cardinal>) {
+        package init(
+            head: Index<S.Element>,
+            count: Tagged<S.Element, Cardinal>,
+            capacity: Tagged<S.Element, Cardinal>
+        ) {
             self.head = head
             self.count = count
+            self.capacity = capacity
         }
     }
 }

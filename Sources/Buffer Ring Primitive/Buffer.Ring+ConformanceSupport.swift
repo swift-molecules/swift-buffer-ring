@@ -22,14 +22,13 @@ extension Buffer.Ring where S: ~Copyable {
     }
 
     @usableFromInline
-    package mutating func _drain(_ body: (consuming S.Element) -> Void) {
+    package mutating func _drain(_ body: (consuming S.Element) -> Void)
+    where S: Store.Ledgered.`Protocol` {
         while !header.isEmpty {
-            let element = storage.move(at: header.head)
-            header.head = Index.Modular.successor(of: header.head, capacity: header.capacity)
-            header.count = header.count.subtract.saturating(.one)
-            body(element)
+            body(Self.popFront(header: &header, storage: &storage))
         }
         header.head = .zero
+        storage.initialization = .empty
     }
 }
 

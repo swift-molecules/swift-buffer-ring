@@ -18,6 +18,10 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
     @inlinable
     public subscript(slot: Index<S.Element>) -> S.Element {
         _read {
+            precondition(
+                slot < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             yield storage[
                 Index.Modular.physical(
                     forLogical: slot,
@@ -27,6 +31,10 @@ extension Buffer.Ring.Bounded: Store.`Protocol` where S: Store.Ledgered.`Protoco
             ]
         }
         _modify {
+            precondition(
+                slot < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             yield &storage[
                 Index.Modular.physical(
                     forLogical: slot,

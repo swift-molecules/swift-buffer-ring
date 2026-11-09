@@ -42,15 +42,38 @@ extension Buffer.Ring where S: ~Copyable {
 
     @inlinable
     public var checkpoint: Checkpoint {
-        Checkpoint(head: header.head, count: header.count)
+        Checkpoint(head: header.head, count: header.count, capacity: header.capacity)
     }
 
+    /// Drops, and destroys, every element pushed at the back since `checkpoint`.
+    ///
+    /// Lawful only while the ring still holds the checkpoint's front: the same
+    /// storage (no growth or compaction since) and the same head, with at least
+    /// the checkpoint's count. Anything else traps rather than exposing emptied
+    /// or relocated slots.
     @inlinable
     public mutating func restore(to checkpoint: Checkpoint)
     where S: Store.Ledgered.`Protocol` {
-        header.head = checkpoint.head
-        header.count = checkpoint.count
-        storage.initialization = header.initialization
+        Self.restore(to: checkpoint, header: &header, storage: &storage)
+    }
+
+    @inlinable
+    public static func restore(
+        to checkpoint: Checkpoint,
+        header: inout Header,
+        storage: inout S
+    ) where S: Store.Ledgered.`Protocol` {
+        precondition(
+            checkpoint.capacity == header.capacity,
+            "ring restore: the storage was reallocated since the checkpoint"
+        )
+        precondition(
+            checkpoint.head == header.head && checkpoint.count <= header.count,
+            "ring restore: the ring's front changed since the checkpoint"
+        )
+        while header.count > checkpoint.count {
+            _ = popBack(header: &header, storage: &storage)
+        }
     }
 }
 
@@ -77,6 +100,7 @@ extension Buffer.Ring where S: ~Copyable {
         header: inout Header,
         storage: inout S
     ) -> S.Element where S: Store.Ledgered.`Protocol` {
+        precondition(!header.isEmpty, "ring: pop on an empty ring")
         let element = storage.move(at: header.head)
 
         header.head = Index.Modular.successor(of: header.head, capacity: header.capacity)
@@ -108,6 +132,7 @@ extension Buffer.Ring where S: ~Copyable {
         header: inout Header,
         storage: inout S
     ) -> S.Element where S: Store.Ledgered.`Protocol` {
+        precondition(!header.isEmpty, "ring: pop on an empty ring")
         let newCount = header.count.subtract.saturating(.one)
         let lastOffset = Index<S.Element>.Offset(newCount)
         let lastSlot = Index.Modular.advanced(
@@ -221,6 +246,7 @@ extension Buffer.Ring where S: ~Copyable {
                 dst += Tagged<Element, Cardinal>.one
             }
         }
+        storage.initialization = .empty
         storage = newStorage
         header = Self.Header(capacity: newCapacity)
         header.count = oldCount
@@ -362,6 +388,10 @@ extension Buffer.Ring where S: ~Copyable {
     @inlinable
     public subscript(index: Index<S.Element>) -> S.Element {
         _read {
+            precondition(
+                index < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             let physical = Index.Modular.physical(
                 forLogical: index,
                 head: header.head,
@@ -370,6 +400,10 @@ extension Buffer.Ring where S: ~Copyable {
             yield storage[physical]
         }
         _modify {
+            precondition(
+                index < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             let physical = Index.Modular.physical(
                 forLogical: index,
                 head: header.head,
@@ -392,11 +426,13 @@ extension Buffer.Ring where S: ~Copyable {
 
     @inlinable
     public func withFront<R: ~Copyable>(_ body: (borrowing S.Element) -> R) -> R {
+        precondition(!header.isEmpty, "ring: front of an empty ring")
         return body(storage[header.head])
     }
 
     @inlinable
     public func withBack<R: ~Copyable>(_ body: (borrowing S.Element) -> R) -> R {
+        precondition(!header.isEmpty, "ring: back of an empty ring")
         return body(
             storage[
                 Index.Modular.advanced(

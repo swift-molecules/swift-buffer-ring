@@ -10,7 +10,7 @@ public import Span
 public import Store
 import Tagged
 
-extension Buffer.Ring: Sequence.Drain.`Protocol` where S: ~Copyable {
+extension Buffer.Ring: Sequence.Drain.`Protocol` where S: Store.Ledgered.`Protocol`, S: ~Copyable {
 
     @inlinable
     public mutating func drain(_ body: (consuming S.Element) -> Void) {
@@ -18,7 +18,8 @@ extension Buffer.Ring: Sequence.Drain.`Protocol` where S: ~Copyable {
     }
 }
 
-extension Buffer.Ring where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
+extension Buffer.Ring
+where S: Span.`Protocol` & Store.Ledgered.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
     @inlinable
     public mutating func removeAll() {

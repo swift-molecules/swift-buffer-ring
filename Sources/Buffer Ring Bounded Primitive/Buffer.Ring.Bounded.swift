@@ -63,15 +63,17 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 
     @inlinable
     public var checkpoint: Buffer.Ring.Checkpoint {
-        Buffer.Ring.Checkpoint(head: header.head, count: header.count)
+        Buffer.Ring.Checkpoint(head: header.head, count: header.count, capacity: header.capacity)
     }
 
+    /// Drops, and destroys, every element pushed at the back since `checkpoint`.
+    ///
+    /// Lawful only while the ring still holds the checkpoint's front (the same
+    /// head, with at least the checkpoint's count); anything else traps.
     @inlinable
     public mutating func restore(to checkpoint: Buffer.Ring.Checkpoint)
     where S: Store.Ledgered.`Protocol` {
-        header.head = checkpoint.head
-        header.count = checkpoint.count
-        storage.initialization = header.initialization
+        Buffer.Ring.restore(to: checkpoint, header: &header, storage: &storage)
     }
 }
 
@@ -183,6 +185,10 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
     @inlinable
     public subscript(index: Index<S.Element>) -> S.Element {
         _read {
+            precondition(
+                index < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             let physical = Index.Modular.physical(
                 forLogical: index,
                 head: header.head,
@@ -191,6 +197,10 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
             yield storage[physical]
         }
         _modify {
+            precondition(
+                index < header.count.map { Ordinal($0.rawValue) },
+                "ring: index out of range"
+            )
             let physical = Index.Modular.physical(
                 forLogical: index,
                 head: header.head,
@@ -205,11 +215,13 @@ extension Buffer.Ring.Bounded where S: ~Copyable {
 
     @inlinable
     public func withFront<R: ~Copyable>(_ body: (borrowing S.Element) -> R) -> R {
+        precondition(!header.isEmpty, "ring: front of an empty ring")
         return body(storage[header.head])
     }
 
     @inlinable
     public func withBack<R: ~Copyable>(_ body: (borrowing S.Element) -> R) -> R {
+        precondition(!header.isEmpty, "ring: back of an empty ring")
         return body(
             storage[
                 Index.Modular.advanced(

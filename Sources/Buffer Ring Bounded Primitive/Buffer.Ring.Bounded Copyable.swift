@@ -44,11 +44,13 @@ where
 
     @inlinable
     public var front: Element {
-        base.value.storage[base.value.header.head]
+        precondition(!base.value.header.isEmpty, "ring: front of an empty ring")
+        return base.value.storage[base.value.header.head]
     }
 
     @inlinable
     public var back: Element {
+        precondition(!base.value.header.isEmpty, "ring: back of an empty ring")
         return base.value.storage[
             Index.Modular.advanced(
                 base.value.header.head,
@@ -70,11 +72,13 @@ where
 
     @inlinable
     public var front: Element {
-        base.value.storage[base.value.header.head]
+        precondition(!base.value.header.isEmpty, "ring: front of an empty ring")
+        return base.value.storage[base.value.header.head]
     }
 
     @inlinable
     public var back: Element {
+        precondition(!base.value.header.isEmpty, "ring: back of an empty ring")
         return base.value.storage[
             Index.Modular.advanced(
                 base.value.header.head,
